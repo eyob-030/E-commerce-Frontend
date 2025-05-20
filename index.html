@@ -1,728 +1,771 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Shoppy - Premium E-commerce</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shoppy - Premium E-commerce</title>
 
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/navbar.css" />
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/navbar.css" />
 
-  <!-- Font Awesome -->
-  <script src="https://kit.fontawesome.com/f30fac2c61.js" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/f30fac2c61.js"
+      crossorigin="anonymous"
+    ></script>
 
-  <style>
-    :root {
-      --primary-color: #2c3e50;
-      --secondary-color: #ffc107;
-      --accent-color: #e74c3c;
-      --light-color: #ecf0f1;
-      --dark-color: #2c3e50;
-    }
-    
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    
-    .navbar {
-      background-color: var(--primary-color) !important;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-    
-    .navbar-brand {
-      font-weight: 700;
-      font-size: 1.5rem;
-      color: white;
-      text-decoration: none;
-      text-transform: uppercase;
-    }
-    
-    .nav-link:hover {
-      color: var(--secondary-color) !important;
-    }
+    <style>
+      :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #ffc107;
+        --accent-color: #e74c3c;
+        --light-color: #ecf0f1;
+        --dark-color: #2c3e50;
+      }
 
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      width: 0;
-      height: 2px;
-      bottom: 0;
-      left: 0;
-      background-color: var(--secondary-color);
-      transition: width 0.3s ease;
-    }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
 
-    .nav-link:hover::after {
-      width: 100%;
-    }
+      .navbar {
+        background-color: var(--primary-color) !important;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
 
-    
-    .hero-section {
-      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
-      background-size: cover;
-      background-position: center;
-      color: white;
-      padding: 100px 0;
-    }
-    
-    .card {
-      border: none;
-      border-radius: 10px;
-      overflow: hidden;
-      margin-bottom: 20px;
-      transition: all 0.3s ease;
-    }
-    
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    }
-    
-    .card-img-top {
-      height: 250px;
-      object-fit: cover;
-    }
-    
-    .card-body {
-      padding: 20px;
-    }
-    
-    .card-title {
-      font-weight: 600;
-      margin-bottom: 10px;
-    }
-    
-    .card-text {
-      color: var(--accent-color);
-      font-weight: 700;
-      font-size: 1.1rem;
-    }
-    
-    .btn-warning {
-      background-color: var(--secondary-color);
-      border: none;
-      color: var(--dark-color);
-      font-weight: 600;
-      padding: 10px 20px;
-      transition: all 0.3s ease;
-    }
-    
-    .btn-warning:hover {
-      background-color: #e0a800;
-      transform: translateY(-2px);
-    }
-    
-    .quantity-input {
-      width: 60px;
-      text-align: center;
-    }
-    
-    .footer {
-      background-color: var(--primary-color);
-      color: white;
-      padding: 40px 0;
-    }
-    
-    .footer a {
-      color: var(--light-color);
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-    
-    .footer a:hover {
-      color: var(--secondary-color);
-    }
-    
-    .section-title {
-      position: relative;
-      margin-bottom: 40px;
-      text-align: center;
-    }
-    
-    .section-title::after {
-      content: '';
-      display: block;
-      width: 80px;
-      height: 3px;
-      background-color: var(--secondary-color);
-      margin: 15px auto;
-    }
-    
-    .modal-content {
-      border-radius: 10px;
-      border: none;
-    }
-    
-    .nav-tabs .nav-link {
-      color: var(--dark-color);
-      font-weight: 500;
-    }
-    
-    .nav-tabs .nav-link.active {
-      color: var(--secondary-color);
-      font-weight: 600;
-    }
-    
-    .form-control:focus {
-      border-color: var(--secondary-color);
-      box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
-    }
-    
-    /* Cart Page Styles */
-    .cart-item {
-      border-bottom: 1px solid #eee;
-      padding: 15px 0;
-    }
-    
-    /* Review Page Styles */
-    .review-card {
-      margin-bottom: 20px;
-    }
-    
-    /* Blog Page Styles */
-    .blog-card {
-      margin-bottom: 30px;
-    }
-    
-    /* Contact Page Styles */
-    .contact-form {
-      max-width: 600px;
-      margin: 0 auto;
-    }
+      .navbar-brand {
+        font-weight: 700;
+        font-size: 1.5rem;
+        color: white;
+        text-decoration: none;
+        text-transform: uppercase;
+      }
 
-.amazon-header {
-  background-color: rgb(19, 25, 33);
-  color: white;
-  padding-left: 15px;
-  padding-right: 15px;
+      .nav-link:hover {
+        color: var(--secondary-color) !important;
+      }
 
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: var(--secondary-color);
+        transition: width 0.3s ease;
+      }
 
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 60px;
-}
+      .nav-link:hover::after {
+        width: 100%;
+      }
 
-.amazon-header-left-section {
-  width: 180px;
-}
+      .hero-section {
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+          url("https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80");
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 100px 0;
+      }
 
-@media (max-width: 800px) {
-  .amazon-header-left-section {
-    width: unset;
-  }
-}
+      .card {
+        border: none;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+      }
 
-.header-link {
-  display: inline-block;
-  padding: 6px;
-  border-radius: 2px;
-  cursor: pointer;
-  text-decoration: none;
-  border: 1px solid rgba(0, 0, 0, 0);
-}
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
 
-.header-link:hover {
-  border: 1px solid white;
-}
+      .card-img-top {
+        height: 250px;
+        object-fit: cover;
+      }
 
- 
+      .card-body {
+        padding: 20px;
+      }
 
- 
+      .card-title {
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
 
-.amazon-header-middle-section {
-  flex: 1;
-  max-width: 850px;
-  margin-left: 10px;
-  margin-right: 10px;
-  display: flex;
-}
- 
+      .card-text {
+        color: var(--accent-color);
+        font-weight: 700;
+        font-size: 1.1rem;
+      }
 
- 
+      .btn-warning {
+        background-color: var(--secondary-color);
+        border: none;
+        color: var(--dark-color);
+        font-weight: 600;
+        padding: 10px 20px;
+        transition: all 0.3s ease;
+      }
 
-.amazon-header-right-section {
-  width: 180px;
-  flex-shrink: 0;
-  display: flex;
-  justify-content: end;
-}
+      .btn-warning:hover {
+        background-color: #e0a800;
+        transform: translateY(-2px);
+      }
 
-.orders-link {
-  color: white;
-}
+      .quantity-input {
+        width: 60px;
+        text-align: center;
+      }
 
-.returns-text {
-  display: block;
-  font-size: 13px;
-}
+      .footer {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 40px 0;
+      }
 
-.orders-text {
-  display: block;
-  font-size: 15px;
-  font-weight: 700;
-}
+      .footer a {
+        color: var(--light-color);
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
 
-.cart-link {
-  color: white;
-  display: flex;
-  align-items: center;
-  position: relative;
-}
+      .footer a:hover {
+        color: var(--secondary-color);
+      }
 
-.cart-icon {
-  width: 50px;
-}
+      .section-title {
+        position: relative;
+        margin-bottom: 40px;
+        text-align: center;
+      }
 
-.cart-text {
-  margin-top: 12px;
-  font-size: 15px;
-  font-weight: 700;
-}
+      .section-title::after {
+        content: "";
+        display: block;
+        width: 80px;
+        height: 3px;
+        background-color: var(--secondary-color);
+        margin: 15px auto;
+      }
 
-.cart-quantity {
-  color: rgb(240, 136, 4);
-  font-size: 16px;
-  font-weight: 700;
+      .modal-content {
+        border-radius: 10px;
+        border: none;
+      }
 
-  position: absolute;
-  top: 4px;
-  left: 22px;
-  
-  width: 26px;
-  text-align: center;
-}
-.search-bar {
-  flex: 1;
-  width: 0;
-  font-size: 16px;
-  height: 38px;
-  padding-left: 15px;
-  border: none;
-  background-color: lightgrey;
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
+      .nav-tabs .nav-link {
+        color: var(--dark-color);
+        font-weight: 500;
+      }
 
-.search-button {
-  background-color: rgb(254, 189, 105);
-  border: none;
-  width: 45px;
-  height: 40px;
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
-  flex-shrink: 0;
-}
+      .nav-tabs .nav-link.active {
+        color: var(--secondary-color);
+        font-weight: 600;
+      }
 
-.search-icon {
-  height: 22px;
-  margin-left: 2px;
-  margin-top: 3px;
-}
+      .form-control:focus {
+        border-color: var(--secondary-color);
+        box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
+      }
 
-  
- 
+      /* Cart Page Styles */
+      .cart-item {
+        border-bottom: 1px solid #eee;
+        padding: 15px 0;
+      }
 
-  </style>
-</head>
+      /* Review Page Styles */
+      .review-card {
+        margin-bottom: 20px;
+      }
 
-<body>
-<!-- Navbar (HTML) -->
-<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
-  <div class="container d-flex justify-content-between align-items-center">
-    
-    <!-- Left: Logo -->
-    <a class="navbar-brand" href="index.html">SHOPPY</a>
+      /* Blog Page Styles */
+      .blog-card {
+        margin-bottom: 30px;
+      }
 
-    <!-- Toggler -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+      /* Contact Page Styles */
+      .contact-form {
+        max-width: 600px;
+        margin: 0 auto;
+      }
 
-    <!-- Center: Navigation Links -->
-    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-      <ul class="navbar-nav text-center">
-        <li class="nav-item"><a class="nav-link text-white" href="index.html">Home</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="index.html#shop">Shop</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="index.html#review">Review</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="index.html#blog">Blog</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="contact.html">Contact</a></li>
-      </ul>
-    </div>
+      .amazon-header {
+        background-color: rgb(19, 25, 33);
+        color: white;
+        padding-left: 15px;
+        padding-right: 15px;
 
-    <!-- Right: Cart and Orders -->
-    <div class="d-flex align-items-center custom-header-right-section">
-      <a class="orders-link header-link me-3" href="orders.html">
-        <span class="returns-text">Returns</span><br />
-        <span class="orders-text">& Orders</span>
-      </a>
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
 
-      <a class="cart-link header-link me-3" href="cart.html">
-        <img class="cart-icon" src="assets/images/icons/cart-icon.png" alt="Cart">
-        <div class="cart-quantity">3</div>
-        <div class="cart-text">Cart</div>
-      </a>
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 60px;
+      }
 
-      <button class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#authModal">
-        <i class="fas fa-user me-2"></i>Login
-      </button>
-    </div>
-  </div>
-</nav>
+      .amazon-header-left-section {
+        width: 180px;
+      }
 
+      @media (max-width: 800px) {
+        .amazon-header-left-section {
+          width: unset;
+        }
+      }
 
-<!-- Hero Section -->
-<section class="hero-section">
-  <div class="container text-center">
-    <h1 class="display-4 fw-bold mb-4">Fashion For Always</h1>
-    <p class="lead mb-5">Discover the latest trends and styles for every season. Premium quality at affordable prices.</p>
-    <a href="#shop" class="btn btn-warning btn-lg px-4">Shop Now</a>
-  </div>
-</section>
+      .header-link {
+        display: inline-block;
+        padding: 6px;
+        border-radius: 2px;
+        cursor: pointer;
+        text-decoration: none;
+        border: 1px solid rgba(0, 0, 0, 0);
+      }
 
-<!-- Shop Section -->
-<section class="py-5" id="shop">
-  <div class="container">
-    <h2 class="section-title">Trending <span class="text-warning">Collection</span></h2>
-    <br>
-      <div class="amazon-header-middle-section">
-        <input class="search-bar" type="text" placeholder="Search">
+      .header-link:hover {
+        border: 1px solid white;
+      }
 
-        <button class="search-button">
-          <img class="search-icon" src="assets/images/icons/search-icon.png">
+      .amazon-header-middle-section {
+        flex: 1;
+        max-width: 850px;
+        margin-left: 10px;
+        margin-right: 10px;
+        display: flex;
+      }
+
+      .amazon-header-right-section {
+        width: 180px;
+        flex-shrink: 0;
+        display: flex;
+        justify-content: end;
+      }
+
+      .orders-link {
+        color: white;
+      }
+
+      .returns-text {
+        display: block;
+        font-size: 13px;
+      }
+
+      .orders-text {
+        display: block;
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .cart-link {
+        color: white;
+        display: flex;
+        align-items: center;
+        position: relative;
+      }
+
+      .cart-icon {
+        width: 50px;
+      }
+
+      .cart-text {
+        margin-top: 12px;
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .cart-quantity {
+        color: rgb(240, 136, 4);
+        font-size: 16px;
+        font-weight: 700;
+
+        position: absolute;
+        top: 4px;
+        left: 22px;
+
+        width: 26px;
+        text-align: center;
+      }
+      .search-bar {
+        flex: 1;
+        width: 0;
+        font-size: 16px;
+        height: 38px;
+        padding-left: 15px;
+        border: none;
+        background-color: lightgrey;
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      .search-button {
+        background-color: rgb(254, 189, 105);
+        border: none;
+        width: 45px;
+        height: 40px;
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+        flex-shrink: 0;
+      }
+
+      .search-icon {
+        height: 22px;
+        margin-left: 2px;
+        margin-top: 3px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navbar (HTML) -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+      <div class="container d-flex justify-content-between align-items-center">
+        <!-- Left: Logo -->
+        <a class="navbar-brand" href="index.html">SHOPPY</a>
+
+        <!-- Toggler -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
         </button>
-      </div>
-      <br><br>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
 
-      <!-- Product 1 -->
-      <div class="col">
-        <div class="card h-100">
-          <img src="https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Premium T-Shirt">
-          <div class="card-body">
-            <h5 class="card-title">Premium T-Shirt</h5>
-            <p class="card-text">$49.99 <span class="text-decoration-line-through text-muted small ms-2">$69.99</span></p>
-            <div class="text-warning mb-2">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star-half-alt"></i>
-              <span class="text-muted small ms-2">(128)</span>
+        <!-- Center: Navigation Links -->
+        <div
+          class="collapse navbar-collapse justify-content-center"
+          id="navbarNav"
+        >
+          <ul class="navbar-nav text-center">
+            <li class="nav-item">
+              <a class="nav-link text-white" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="index.html#shop">Shop</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="index.html#review">Review</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="index.html#blog">Blog</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="contact.html">Contact</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Right: Cart and Orders -->
+        <div class="d-flex align-items-center custom-header-right-section">
+          <a class="orders-link header-link me-3" href="orders.html">
+            <span class="returns-text">Returns</span><br />
+            <span class="orders-text">& Orders</span>
+          </a>
+
+          <a class="cart-link header-link me-3" href="cart.html">
+            <img
+              class="cart-icon"
+              src="assets/images/icons/cart-icon.png"
+              alt="Cart"
+            />
+            <div class="cart-quantity">3</div>
+            <div class="cart-text">Cart</div>
+          </a>
+
+          <button
+            class="btn btn-outline-warning"
+            data-bs-toggle="modal"
+            data-bs-target="#authModal"
+          >
+            <i class="fas fa-user me-2"></i>Login
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-4">Fashion For Always</h1>
+        <p class="lead mb-5">
+          Discover the latest trends and styles for every season. Premium
+          quality at affordable prices.
+        </p>
+        <a href="#shop" class="btn btn-warning btn-lg px-4">Shop Now</a>
+      </div>
+    </section>
+
+    <div class="product-grid" id="productGrid"></div>
+
+    <!-- Features Section -->
+    <section class="py-5 bg-light">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-md-4 text-center">
+            <div class="p-4">
+              <i class="fas fa-truck fa-3x mb-3 text-warning"></i>
+              <h4>Free Shipping</h4>
+              <p class="mb-0">On all orders over $100</p>
             </div>
-            <div class="d-flex align-items-center gap-2 mb-3">
-              <label for="qty1" class="form-label mb-0">Qty:</label>
-              <input type="number" class="form-control form-control-sm quantity-input" id="qty1" min="1" value="1">
+          </div>
+          <div class="col-md-4 text-center">
+            <div class="p-4">
+              <i class="fas fa-undo fa-3x mb-3 text-warning"></i>
+              <h4>Easy Returns</h4>
+              <p class="mb-0">30-day return policy</p>
             </div>
-            <button class="btn btn-warning w-100">
-              <i class="fas fa-shopping-cart me-2"></i>Add to Cart
-            </button>
+          </div>
+          <div class="col-md-4 text-center">
+            <div class="p-4">
+              <i class="fas fa-lock fa-3x mb-3 text-warning"></i>
+              <h4>Secure Payment</h4>
+              <p class="mb-0">100% secure checkout</p>
+            </div>
           </div>
         </div>
       </div>
+    </section>
 
-      <!-- Product 2 -->
-      <div class="col">
-        <div class="card h-100">
-          <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Casual Shirt">
-          <div class="card-body">
-            <h5 class="card-title">Casual Shirt</h5>
-            <p class="card-text">$59.99 <span class="text-decoration-line-through text-muted small ms-2">$79.99</span></p>
-            <div class="text-warning mb-2">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="far fa-star"></i>
-              <span class="text-muted small ms-2">(95)</span>
-            </div>
-            <div class="d-flex align-items-center gap-2 mb-3">
-              <label for="qty2" class="form-label mb-0">Qty:</label>
-              <input type="number" class="form-control form-control-sm quantity-input" id="qty2" min="1" value="1">
-            </div>
-            <button class="btn btn-warning w-100">
-              <i class="fas fa-shopping-cart me-2"></i>Add to Cart
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Product 3 -->
-      <div class="col">
-        <div class="card h-100">
-          <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Denim Jacket">
-          <div class="card-body">
-            <h5 class="card-title">Denim Jacket</h5>
-            <p class="card-text">$89.99 <span class="text-decoration-line-through text-muted small ms-2">$109.99</span></p>
-            <div class="text-warning mb-2">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <span class="text-muted small ms-2">(210)</span>
-            </div>
-            <div class="d-flex align-items-center gap-2 mb-3">
-              <label for="qty3" class="form-label mb-0">Qty:</label>
-              <input type="number" class="form-control form-control-sm quantity-input" id="qty3" min="1" value="1">
-            </div>
-            <button class="btn btn-warning w-100">
-              <i class="fas fa-shopping-cart me-2"></i>Add to Cart
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Product 4 -->
-      <div class="col">
-        <div class="card h-100">
-          <img src="https://images.unsplash.com/photo-1527719327859-c6ce80353573?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Slim Fit Jeans">
-          <div class="card-body">
-            <h5 class="card-title">Slim Fit Jeans</h5>
-            <p class="card-text">$69.99 <span class="text-decoration-line-through text-muted small ms-2">$89.99</span></p>
-            <div class="text-warning mb-2">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star-half-alt"></i>
-              <i class="far fa-star"></i>
-              <span class="text-muted small ms-2">(76)</span>
-            </div>
-            <div class="d-flex align-items-center gap-2 mb-3">
-              <label for="qty4" class="form-label mb-0">Qty:</label>
-              <input type="number" class="form-control form-control-sm quantity-input" id="qty4" min="1" value="1">
-            </div>
-            <button class="btn btn-warning w-100">
-              <i class="fas fa-shopping-cart me-2"></i>Add to Cart
-            </button>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- Features Section -->
-<section class="py-5 bg-light">
-  <div class="container">
-    <div class="row g-4">
-      <div class="col-md-4 text-center">
-        <div class="p-4">
-          <i class="fas fa-truck fa-3x mb-3 text-warning"></i>
-          <h4>Free Shipping</h4>
-          <p class="mb-0">On all orders over $100</p>
-        </div>
-      </div>
-      <div class="col-md-4 text-center">
-        <div class="p-4">
-          <i class="fas fa-undo fa-3x mb-3 text-warning"></i>
-          <h4>Easy Returns</h4>
-          <p class="mb-0">30-day return policy</p>
-        </div>
-      </div>
-      <div class="col-md-4 text-center">
-        <div class="p-4">
-          <i class="fas fa-lock fa-3x mb-3 text-warning"></i>
-          <h4>Secure Payment</h4>
-          <p class="mb-0">100% secure checkout</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Review Section -->
-<section class="py-5" id="review">
-  <div class="container">
-    <h2 class="section-title">Customer <span class="text-warning">Reviews</span></h2>
-    <div class="row">
-      <div class="col-md-6">
-        <div class="card review-card">
-          <div class="card-body">
-            <div class="d-flex align-items-center mb-3">
-              <img src="https://randomuser.me/api/portraits/women/32.jpg" class="rounded-circle me-3" width="50" height="50" alt="Customer">
-              <div>
-                <h5 class="mb-0">Sarah Johnson</h5>
-                <div class="text-warning">
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
+    <!-- Review Section -->
+    <section class="py-5" id="review">
+      <div class="container">
+        <h2 class="section-title">
+          Customer <span class="text-warning">Reviews</span>
+        </h2>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card review-card">
+              <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                  <img
+                    src="https://randomuser.me/api/portraits/women/32.jpg"
+                    class="rounded-circle me-3"
+                    width="50"
+                    height="50"
+                    alt="Customer"
+                  />
+                  <div>
+                    <h5 class="mb-0">Sarah Johnson</h5>
+                    <div class="text-warning">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                    </div>
+                  </div>
                 </div>
+                <p class="card-text">
+                  "Absolutely love my new denim jacket! The quality is
+                  exceptional and it fits perfectly. Will definitely shop here
+                  again!"
+                </p>
+                <small class="text-muted">Posted on March 15, 2023</small>
               </div>
             </div>
-            <p class="card-text">"Absolutely love my new denim jacket! The quality is exceptional and it fits perfectly. Will definitely shop here again!"</p>
-            <small class="text-muted">Posted on March 15, 2023</small>
           </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="card review-card">
-          <div class="card-body">
-            <div class="d-flex align-items-center mb-3">
-              <img src="https://randomuser.me/api/portraits/men/45.jpg" class="rounded-circle me-3" width="50" height="50" alt="Customer">
-              <div>
-                <h5 class="mb-0">Michael Chen</h5>
-                <div class="text-warning">
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="far fa-star"></i>
+          <div class="col-md-6">
+            <div class="card review-card">
+              <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                  <img
+                    src="https://randomuser.me/api/portraits/men/45.jpg"
+                    class="rounded-circle me-3"
+                    width="50"
+                    height="50"
+                    alt="Customer"
+                  />
+                  <div>
+                    <h5 class="mb-0">Michael Chen</h5>
+                    <div class="text-warning">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="far fa-star"></i>
+                    </div>
+                  </div>
                 </div>
+                <p class="card-text">
+                  "Great selection of clothes and fast shipping. The only reason
+                  I'm not giving 5 stars is because the sizing was slightly
+                  off."
+                </p>
+                <small class="text-muted">Posted on April 2, 2023</small>
               </div>
             </div>
-            <p class="card-text">"Great selection of clothes and fast shipping. The only reason I'm not giving 5 stars is because the sizing was slightly off."</p>
-            <small class="text-muted">Posted on April 2, 2023</small>
           </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="card review-card">
-          <div class="card-body">
-            <div class="d-flex align-items-center mb-3">
-              <img src="https://randomuser.me/api/portraits/women/68.jpg" class="rounded-circle me-3" width="50" height="50" alt="Customer">
-              <div>
-                <h5 class="mb-0">Emily Rodriguez</h5>
-                <div class="text-warning">
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star-half-alt"></i>
+          <div class="col-md-6">
+            <div class="card review-card">
+              <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                  <img
+                    src="https://randomuser.me/api/portraits/women/68.jpg"
+                    class="rounded-circle me-3"
+                    width="50"
+                    height="50"
+                    alt="Customer"
+                  />
+                  <div>
+                    <h5 class="mb-0">Emily Rodriguez</h5>
+                    <div class="text-warning">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star-half-alt"></i>
+                    </div>
+                  </div>
                 </div>
+                <p class="card-text">
+                  "The t-shirts are so comfortable and the colors are exactly as
+                  shown. Customer service was very helpful when I had
+                  questions."
+                </p>
+                <small class="text-muted">Posted on February 28, 2023</small>
               </div>
             </div>
-            <p class="card-text">"The t-shirts are so comfortable and the colors are exactly as shown. Customer service was very helpful when I had questions."</p>
-            <small class="text-muted">Posted on February 28, 2023</small>
           </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="card review-card">
-          <div class="card-body">
-            <div class="d-flex align-items-center mb-3">
-              <img src="https://randomuser.me/api/portraits/men/22.jpg" class="rounded-circle me-3" width="50" height="50" alt="Customer">
-              <div>
-                <h5 class="mb-0">David Wilson</h5>
-                <div class="text-warning">
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
+          <div class="col-md-6">
+            <div class="card review-card">
+              <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                  <img
+                    src="https://randomuser.me/api/portraits/men/22.jpg"
+                    class="rounded-circle me-3"
+                    width="50"
+                    height="50"
+                    alt="Customer"
+                  />
+                  <div>
+                    <h5 class="mb-0">David Wilson</h5>
+                    <div class="text-warning">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                    </div>
+                  </div>
                 </div>
+                <p class="card-text">
+                  "Best online shopping experience I've had in a while. The
+                  jeans fit perfectly and the return process was hassle-free
+                  when I needed to exchange sizes."
+                </p>
+                <small class="text-muted">Posted on March 10, 2023</small>
               </div>
             </div>
-            <p class="card-text">"Best online shopping experience I've had in a while. The jeans fit perfectly and the return process was hassle-free when I needed to exchange sizes."</p>
-            <small class="text-muted">Posted on March 10, 2023</small>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- Blog Section -->
-<section class="py-5 bg-light" id="blog">
-  <div class="container">
-    <h2 class="section-title">Latest <span class="text-warning">Blog</span> Posts</h2>
-    <div class="row">
-      <div class="col-md-4">
-        <div class="card blog-card h-100">
-          <img src="https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Blog Post">
-          <div class="card-body">
-            <h5 class="card-title">Spring Fashion Trends 2025</h5>
-            <p class="card-text">Discover the must-have fashion trends for this spring season that will keep you looking stylish and fresh.</p>
-            <a href="#" class="btn btn-outline-warning">Read More</a>
+    <!-- Blog Section -->
+    <section class="py-5 bg-light" id="blog">
+      <div class="container">
+        <h2 class="section-title">
+          Latest <span class="text-warning">Blog</span> Posts
+        </h2>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card blog-card h-100">
+              <img
+                src="https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                class="card-img-top"
+                alt="Blog Post"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Spring Fashion Trends 2025</h5>
+                <p class="card-text">
+                  Discover the must-have fashion trends for this spring season
+                  that will keep you looking stylish and fresh.
+                </p>
+                <a href="#" class="btn btn-outline-warning">Read More</a>
+              </div>
+              <div class="card-footer bg-transparent">
+                <small class="text-muted">Posted on March 5, 2025</small>
+              </div>
+            </div>
           </div>
-          <div class="card-footer bg-transparent">
-            <small class="text-muted">Posted on March 5, 2025</small>
+          <div class="col-md-4">
+            <div class="card blog-card h-100">
+              <img
+                src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                class="card-img-top"
+                alt="Blog Post"
+              />
+              <div class="card-body">
+                <h5 class="card-title">How to Build a Capsule Wardrobe</h5>
+                <p class="card-text">
+                  Learn how to create a minimalist wardrobe with versatile
+                  pieces that can be mixed and matched for any occasion.
+                </p>
+                <a href="#" class="btn btn-outline-warning">Read More</a>
+              </div>
+              <div class="card-footer bg-transparent">
+                <small class="text-muted">Posted on February 20, 2025</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card blog-card h-100">
+              <img
+                src="https://images.unsplash.com/photo-1479064555552-3ef4979f8908?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                class="card-img-top"
+                alt="Blog Post"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Sustainable Fashion Choices</h5>
+                <p class="card-text">
+                  Explore eco-friendly fashion options that are good for both
+                  your style and the environment.
+                </p>
+                <a href="#" class="btn btn-outline-warning">Read More</a>
+              </div>
+              <div class="card-footer bg-transparent">
+                <small class="text-muted">Posted on January 15, 2025</small>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="card blog-card h-100">
-          <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Blog Post">
-          <div class="card-body">
-            <h5 class="card-title">How to Build a Capsule Wardrobe</h5>
-            <p class="card-text">Learn how to create a minimalist wardrobe with versatile pieces that can be mixed and matched for any occasion.</p>
-            <a href="#" class="btn btn-outline-warning">Read More</a>
+    </section>
+
+    <!-- Cart Section -->
+
+    <!-- Contact Section -->
+
+    <!-- Login/Register Modal -->
+    <div
+      class="modal fade"
+      id="authModal"
+      tabindex="-1"
+      aria-labelledby="authModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="formTitle">Login</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
-          <div class="card-footer bg-transparent">
-            <small class="text-muted">Posted on February 20, 2025</small>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card blog-card h-100">
-          <img src="https://images.unsplash.com/photo-1479064555552-3ef4979f8908?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Blog Post">
-          <div class="card-body">
-            <h5 class="card-title">Sustainable Fashion Choices</h5>
-            <p class="card-text">Explore eco-friendly fashion options that are good for both your style and the environment.</p>
-            <a href="#" class="btn btn-outline-warning">Read More</a>
-          </div>
-          <div class="card-footer bg-transparent">
-            <small class="text-muted">Posted on January 15, 2025</small>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- Cart Section -->
+          <div class="modal-body">
+            <!-- Nav Tabs -->
+            <ul
+              class="nav nav-tabs nav-justified mb-4"
+              id="authTab"
+              role="tablist"
+            >
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link active"
+                  id="login-tab"
+                  type="button"
+                  onclick="setFormMode(true)"
+                >
+                  Login
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  id="register-tab"
+                  type="button"
+                  onclick="setFormMode(false)"
+                >
+                  Register
+                </button>
+              </li>
+            </ul>
 
+            <!-- Unified Form -->
+            <form id="authForm">
+              <!-- Username (only visible in register mode) -->
+              <div class="mb-3" id="usernameWrapper" style="display: none">
+                <label for="username" class="form-label">Full Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="username"
+                  placeholder="Username"
+                />
+              </div>
 
-<!-- Contact Section -->
-
-
-<!-- Login/Register Modal -->
-<div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="authModalLabel">Welcome to Shoppy</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-
-      <div class="modal-body">
-        <!-- Nav Tabs -->
-        <ul class="nav nav-tabs nav-justified mb-4" id="authTab" role="tablist">
-          <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button">Login</button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button">Register</button>
-          </li>
-        </ul>
-
-        <!-- Tab Panes -->
-        <div class="tab-content">
-          <!-- Login Form -->
-          <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
-            <form id="loginForm">
               <div class="mb-3">
-                <label for="loginEmail" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="loginEmail" required>
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="email" required />
               </div>
+
               <div class="mb-3">
-                <label for="loginPassword" class="form-label">Password</label>
-                <input type="password" class="form-control" id="loginPassword" required>
+                <label for="password" class="form-label">Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  required
+                />
                 <div class="form-text text-end">
                   <a href="#" class="text-decoration-none">Forgot password?</a>
                 </div>
               </div>
-              <button type="submit" class="btn btn-warning w-100 mt-3">Login</button>
+
+              <!-- Confirm Password (only visible in register mode, not used in JS logic currently) -->
+              <div class="mb-3" id="confirmWrapper" style="display: none">
+                <label for="confirmPassword" class="form-label"
+                  >Confirm Password</label
+                >
+                <input
+                  type="password"
+                  class="form-control"
+                  id="confirmPassword"
+                />
+              </div>
+
+              <!-- Terms checkbox (only for register) -->
+              <div
+                class="form-check mb-3"
+                id="termsWrapper"
+                style="display: none"
+              >
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="termsCheck"
+                />
+                <label class="form-check-label" for="termsCheck">
+                  I agree to the
+                  <a href="#" class="text-decoration-none"
+                    >Terms and Conditions</a
+                  >
+                </label>
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" class="btn btn-dark w-100" id="submitBtn">
+                Login
+              </button>
+
               <div class="text-center mt-3">
                 <p class="mb-0">Or login with</p>
                 <div class="d-flex justify-content-center gap-3 mt-2">
@@ -734,221 +777,142 @@
                   </button>
                 </div>
               </div>
-            </form>
-          </div>
 
-          <!-- Register Form -->
-          <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
-            <form id="registerForm">
-              <div class="mb-3">
-                <label for="registerName" class="form-label">Full Name</label>
-                <input type="text" class="form-control" id="registerName" required>
-              </div>
-              <div class="mb-3">
-                <label for="registerEmail" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="registerEmail" required>
-              </div>
-              <div class="mb-3">
-                <label for="registerPassword" class="form-label">Password</label>
-                <input type="password" class="form-control" id="registerPassword" required>
-              </div>
-              <div class="mb-3">
-                <label for="registerConfirmPassword" class="form-label">Confirm Password</label>
-                <input type="password" class="form-control" id="registerConfirmPassword" required>
-              </div>
-              <div class="form-check mb-3">
-                <input class="form-check-input" type="checkbox" id="termsCheck" required>
-                <label class="form-check-label" for="termsCheck">
-                  I agree to the <a href="#" class="text-decoration-none">Terms and Conditions</a>
-                </label>
-              </div>
-              <button type="submit" class="btn btn-dark w-100">Create Account</button>
+              <div id="message" class="message mt-3 text-center"></div>
             </form>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-<!-- Footer -->
-<footer class="footer">
-  <div class="container py-5">
-    <div class="row">
-      <div class="col-md-4 mb-4 mb-md-0">
-        <h5 class="text-warning mb-4">SHOPPY</h5>
-        <p>Premium e-commerce platform for fashion enthusiasts. Quality products at affordable prices with excellent customer service.</p>
-        <div class="social-icons mt-4">
-          <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
-          <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="text-white"><i class="fab fa-pinterest"></i></a>
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container py-5">
+        <div class="row">
+          <div class="col-md-4 mb-4 mb-md-0">
+            <h5 class="text-warning mb-4">SHOPPY</h5>
+            <p>
+              Premium e-commerce platform for fashion enthusiasts. Quality
+              products at affordable prices with excellent customer service.
+            </p>
+            <div class="social-icons mt-4">
+              <a href="#" class="text-white me-3"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a href="#" class="text-white me-3"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a href="#" class="text-white me-3"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="#" class="text-white"
+                ><i class="fab fa-pinterest"></i
+              ></a>
+            </div>
+          </div>
+          <div class="col-md-2 mb-4 mb-md-0">
+            <h5 class="text-white mb-4">Shop</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2"><a href="#">Men</a></li>
+              <li class="mb-2"><a href="#">Women</a></li>
+              <li class="mb-2"><a href="#">Kids</a></li>
+              <li class="mb-2"><a href="#">Accessories</a></li>
+              <li><a href="#">New Arrivals</a></li>
+            </ul>
+          </div>
+          <div class="col-md-2 mb-4 mb-md-0">
+            <h5 class="text-white mb-4">Help</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2"><a href="#">FAQs</a></li>
+              <li class="mb-2"><a href="#">Shipping</a></li>
+              <li class="mb-2"><a href="#">Returns</a></li>
+              <li class="mb-2"><a href="#">Size Guide</a></li>
+              <li><a href="#">Contact Us</a></li>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <h5 class="text-white mb-4">Newsletter</h5>
+            <p>Subscribe to get updates on new arrivals and special offers.</p>
+            <form class="mt-4">
+              <div class="input-group mb-3">
+                <input
+                  type="email"
+                  class="form-control"
+                  placeholder="Your email"
+                  aria-label="Your email"
+                />
+                <button class="btn btn-warning" type="button">Subscribe</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <hr class="my-4 bg-secondary" />
+        <div class="row">
+          <div class="col-md-6 text-center text-md-start">
+            <p class="mb-0">&copy; 2025 Shoppy. All rights reserved.</p>
+          </div>
+          <div class="col-md-6 text-center text-md-end"></div>
         </div>
       </div>
-      <div class="col-md-2 mb-4 mb-md-0">
-        <h5 class="text-white mb-4">Shop</h5>
-        <ul class="list-unstyled">
-          <li class="mb-2"><a href="#">Men</a></li>
-          <li class="mb-2"><a href="#">Women</a></li>
-          <li class="mb-2"><a href="#">Kids</a></li>
-          <li class="mb-2"><a href="#">Accessories</a></li>
-          <li><a href="#">New Arrivals</a></li>
-        </ul>
-      </div>
-      <div class="col-md-2 mb-4 mb-md-0">
-        <h5 class="text-white mb-4">Help</h5>
-        <ul class="list-unstyled">
-          <li class="mb-2"><a href="#">FAQs</a></li>
-          <li class="mb-2"><a href="#">Shipping</a></li>
-          <li class="mb-2"><a href="#">Returns</a></li>
-          <li class="mb-2"><a href="#">Size Guide</a></li>
-          <li><a href="#">Contact Us</a></li>
-        </ul>
-      </div>
-      <div class="col-md-4">
-        <h5 class="text-white mb-4">Newsletter</h5>
-        <p>Subscribe to get updates on new arrivals and special offers.</p>
-        <form class="mt-4">
-          <div class="input-group mb-3">
-            <input type="email" class="form-control" placeholder="Your email" aria-label="Your email">
-            <button class="btn btn-warning" type="button">Subscribe</button>
-          </div>
-        </form>
-      </div>
-    </div>
-    <hr class="my-4 bg-secondary">
-    <div class="row">
-      <div class="col-md-6 text-center text-md-start">
-        <p class="mb-0">&copy; 2025 Shoppy. All rights reserved.</p>
-      </div>
-      <div class="col-md-6 text-center text-md-end">
-  
-     
+    </footer>
 
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../frontend/assets/js/log-reg.js"></script>
+    <script>
+      const API_URL = "http://localhost:5000/api/products";
 
-      </div>
-    </div>
-  </div>
-</footer>
+      async function fetchProducts() {
+        try {
+          const res = await fetch(API_URL);
+          if (!res.ok) throw new Error("Failed to fetch products");
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+          const products = await res.json();
+          const productGrid = document.getElementById("productGrid");
 
-<!-- Enhanced Login/Register Script -->
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // Form validation for login
-    const loginForm = document.getElementById('loginForm');
-    if (loginForm) {
-      loginForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const email = document.getElementById('loginEmail').value;
-        const password = document.getElementById('loginPassword').value;
-        
-        // Simple validation
-        if (!email || !password) {
-          alert('Please fill in all fields');
-          return;
+          if (products.length === 0) {
+            productGrid.innerHTML = "<p>No products available.</p>";
+            return;
+          }
+
+          products.forEach((product) => {
+            const card = document.createElement("div");
+            card.className = "product-card";
+
+            let keywords = [];
+            try {
+              keywords = JSON.parse(product.keywords);
+            } catch (e) {
+              console.warn(
+                "Invalid keywords format for product:",
+                product.name
+              );
+            }
+
+            card.innerHTML = `
+        <img src="${product.image_url}" alt="${product.name}" />
+        <div class="product-info">
+          <h3>${product.name}</h3>
+          <p class="price">$${product.price}</p>
+          <p>${product.description || "No description available."}</p>
+          ${
+            keywords.length
+              ? `<p class="keywords">Tags: ${keywords.join(", ")}</p>`
+              : ""
+          }
+        </div>
+      `;
+
+            productGrid.appendChild(card);
+          });
+        } catch (error) {
+          console.error("Error:", error);
+          document.getElementById("productGrid").innerHTML =
+            "<p>Error loading products.</p>";
         }
-        
-        // Simulate successful login
-        alert('Login successful! Welcome back.');
-        const authModal = bootstrap.Modal.getInstance(document.getElementById('authModal'));
-        authModal.hide();
-        
-        // In a real app, you would make an AJAX call to your backend
-        // fetch('/api/login', {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify({ email, password })
-        // })
-        // .then(response => response.json())
-        // .then(data => {
-        //   if (data.success) {
-        //     alert('Login successful!');
-        //     authModal.hide();
-        //     // Update UI to show logged in state
-        //   } else {
-        //     alert(data.message || 'Login failed');
-        //   }
-        // })
-        // .catch(error => {
-        //   console.error('Error:', error);
-        //   alert('An error occurred during login');
-        // });
-      });
-    }
-    
-    // Form validation for registration
-    const registerForm = document.getElementById('registerForm');
-    if (registerForm) {
-      registerForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const name = document.getElementById('registerName').value;
-        const email = document.getElementById('registerEmail').value;
-        const password = document.getElementById('registerPassword').value;
-        const confirmPassword = document.getElementById('registerConfirmPassword').value;
-        const termsChecked = document.getElementById('termsCheck').checked;
-        
-        // Validation
-        if (!name || !email || !password || !confirmPassword) {
-          alert('Please fill in all fields');
-          return;
-        }
-        
-        if (password !== confirmPassword) {
-          alert('Passwords do not match');
-          return;
-        }
-        
-        if (!termsChecked) {
-          alert('You must agree to the terms and conditions');
-          return;
-        }
-        
-        // Simulate successful registration
-        alert('Registration successful! Welcome to Shoppy.');
-        const authModal = bootstrap.Modal.getInstance(document.getElementById('authModal'));
-        authModal.hide();
-        
-        // In a real app, you would make an AJAX call to your backend
-        // fetch('/api/register', {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify({ name, email, password })
-        // })
-        // .then(response => response.json())
-        // .then(data => {
-        //   if (data.success) {
-        //     alert('Registration successful!');
-        //     // Switch to login tab or hide modal
-        //   } else {
-        //     alert(data.message || 'Registration failed');
-        //   }
-        // })
-        // .catch(error => {
-        //   console.error('Error:', error);
-        //   alert('An error occurred during registration');
-        // });
-      });
-    }
-    
-    // Add to cart functionality
-    const addToCartButtons = document.querySelectorAll('.btn-warning:not([data-bs-toggle])');
-    addToCartButtons.forEach(button => {
-      button.addEventListener('click', function() {
-        const card = this.closest('.card');
-        const productName = card.querySelector('.card-title').textContent;
-        const price = card.querySelector('.card-text').textContent.split(' ')[0];
-        const quantity = card.querySelector('.quantity-input').value;
-        
-        alert(`Added ${quantity} ${productName}(s) to cart - Total: $${(parseFloat(price.replace('$', '')) * parseInt(quantity)}`);
-      });
-    });
-  });
-</script>
+      }
 
-</body>
+      fetchProducts();
+    </script>
+  </body>
 </html>
