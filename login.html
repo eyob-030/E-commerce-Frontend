@@ -3,90 +3,155 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login & Registration</title>
+    <title>Authentication</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/f30fac2c61.js"
+      crossorigin="anonymous"
+    ></script>
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        background: #f4f4f4;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-      }
-      .container {
-        background: white;
+      .auth-container {
+        max-width: 500px;
+        margin: 50px auto;
         padding: 30px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        width: 300px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        background-color: white;
       }
-      h2 {
-        text-align: center;
-        margin-bottom: 20px;
-      }
-      input {
-        width: 100%;
-        padding: 8px;
-        margin: 10px 0;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-      }
-      button {
-        width: 100%;
-        padding: 10px;
-        background: #28a745;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-      }
-      button:hover {
-        background: #218838;
-      }
-      .switch {
-        text-align: center;
-        margin-top: 10px;
-        cursor: pointer;
-        color: #007bff;
-      }
-      .message {
+      #message {
+        min-height: 24px;
         margin: 10px 0;
         text-align: center;
-        font-weight: bold;
       }
-      .logout-btn {
-        background: #dc3545;
+      .user-badge {
+        font-size: 0.7rem;
+        padding: 3px 6px;
       }
-      .logout-btn:hover {
-        background: #c82333;
+      .spinner-border {
+        width: 1.2rem;
+        height: 1.2rem;
+        border-width: 0.15em;
+        display: none;
       }
     </style>
   </head>
   <body>
-    <div class="container">
-      <h2 id="formTitle">Login</h2>
-
-      <div id="message" class="message"></div>
-
-      <form id="authForm">
-        <input
-          type="text"
-          id="username"
-          placeholder="Username"
-          style="display: none"
-        />
-        <input type="email" id="email" placeholder="Email" required />
-        <input type="password" id="password" placeholder="Password" required />
-        <button type="submit" id="submitBtn">Login</button>
-      </form>
-
-      <div class="switch" onclick="toggleForm()">
-        Don't have an account? Register
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <button
+          class="btn btn-outline-warning position-relative ms-auto"
+          id="authButton"
+          data-bs-toggle="modal"
+          data-bs-target="#authModal"
+        >
+          <i class="fas fa-user me-2"></i>
+          <span id="authButtonText">Login</span>
+          <span
+            id="userBadge"
+            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none"
+          >
+            <i class="fas fa-check"></i>
+          </span>
+        </button>
       </div>
-      <button class="logout-btn" onclick="logout()">Logout</button>
+    </nav>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="authModal"
+      tabindex="-1"
+      aria-labelledby="authModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="authModalLabel">Login</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="auth-container">
+              <h2 id="formTitle" class="text-center mb-4">Login</h2>
+              <form id="authForm" novalidate>
+                <div id="usernameWrapper" class="mb-3" style="display: none">
+                  <label for="username" class="form-label">Username</label>
+                  <input type="text" class="form-control" id="username" />
+                </div>
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="password" class="form-label">Password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    required
+                  />
+                </div>
+                <div id="confirmWrapper" class="mb-3" style="display: none">
+                  <label for="confirmPassword" class="form-label"
+                    >Confirm Password</label
+                  >
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="confirmPassword"
+                  />
+                </div>
+                <div
+                  id="termsWrapper"
+                  class="mb-3 form-check"
+                  style="display: none"
+                >
+                  <input type="checkbox" class="form-check-input" id="terms" />
+                  <label class="form-check-label" for="terms"
+                    >I agree to the terms and conditions</label
+                  >
+                </div>
+                <div id="message" class="mb-3"></div>
+                <button
+                  type="submit"
+                  id="submitBtn"
+                  class="btn btn-primary w-100"
+                >
+                  <span id="submitText">Login</span>
+                  <span
+                    class="spinner-border spinner-border-sm"
+                    id="submitSpinner"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                </button>
+              </form>
+              <div class="text-center mt-3">
+                <a href="#" id="toggleForm" class="text-decoration-none">
+                  Don't have an account? Register
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
       const formTitle = document.getElementById("formTitle");
@@ -94,78 +159,183 @@
       const usernameInput = document.getElementById("username");
       const emailInput = document.getElementById("email");
       const passwordInput = document.getElementById("password");
-      const submitBtn = document.getElementById("submitBtn");
+      const confirmInput = document.getElementById("confirmPassword");
+      const termsCheckbox = document.getElementById("terms");
+
+      const usernameWrapper = document.getElementById("usernameWrapper");
+      const confirmWrapper = document.getElementById("confirmWrapper");
+      const termsWrapper = document.getElementById("termsWrapper");
+
       const messageDiv = document.getElementById("message");
+      const submitBtn = document.getElementById("submitBtn");
+      const submitText = document.getElementById("submitText");
+      const submitSpinner = document.getElementById("submitSpinner");
+      const toggleForm = document.getElementById("toggleForm");
+
+      const authButton = document.getElementById("authButton");
+      const authButtonText = document.getElementById("authButtonText");
+      const userBadge = document.getElementById("userBadge");
+
+      const API_BASE = "http://localhost:5000/api/auth/";
       let isLogin = true;
 
-      const API = "http://localhost:5000/api/auth"; // Change if your API base changes
-
-      function toggleForm() {
-        isLogin = !isLogin;
+      function setFormMode(loginMode) {
+        isLogin = loginMode;
         formTitle.textContent = isLogin ? "Login" : "Register";
-        submitBtn.textContent = isLogin ? "Login" : "Register";
-        usernameInput.style.display = isLogin ? "none" : "block";
-        document.querySelector(".switch").textContent = isLogin
+        submitText.textContent = isLogin ? "Login" : "Register";
+
+        usernameWrapper.style.display = isLogin ? "none" : "block";
+        confirmWrapper.style.display = isLogin ? "none" : "block";
+        termsWrapper.style.display = isLogin ? "none" : "block";
+
+        usernameInput.required = !isLogin;
+        confirmInput.required = !isLogin;
+        termsCheckbox.required = !isLogin;
+
+        toggleForm.textContent = isLogin
           ? "Don't have an account? Register"
           : "Already have an account? Login";
+
+        authForm.reset();
+        messageDiv.textContent = "";
       }
+
+      toggleForm.addEventListener("click", (e) => {
+        e.preventDefault();
+        setFormMode(!isLogin);
+      });
 
       authForm.addEventListener("submit", async (e) => {
         e.preventDefault();
-        const email = emailInput.value;
-        const password = passwordInput.value;
-        const username = usernameInput.value;
 
-        const endpoint = isLogin ? "/login" : "/register";
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
+        const username = usernameInput.value.trim();
+        const confirmPassword = confirmInput.value.trim();
+
+        submitText.textContent = isLogin ? "Logging in..." : "Registering...";
+        submitSpinner.style.display = "inline-block";
+        submitBtn.disabled = true;
+
+        if (!isLogin) {
+          if (password !== confirmPassword) {
+            showMessage("Passwords do not match", "red");
+            resetSubmitButton();
+            return;
+          }
+          if (!termsCheckbox.checked) {
+            showMessage("You must accept the terms", "red");
+            resetSubmitButton();
+            return;
+          }
+        }
+
         const payload = isLogin
           ? { email, password }
           : { username, email, password };
 
+        const endpoint = isLogin ? "login" : "register";
+
         try {
-          const res = await fetch(API + endpoint, {
+          const response = await fetch(`${API_BASE}${endpoint}`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
             body: JSON.stringify(payload),
           });
 
-          if (res.status === 409) {
-            const data = await res.json();
-            showMessage(data.message || "User already exists", "red");
-            return;
+          const result = await response.json();
+
+          if (!response.ok) {
+            throw new Error(result.message || "Request failed");
           }
 
-          const data = await res.json();
+          showMessage(result.message || "Success", "green");
 
-          if (data.success) {
-            showMessage(data.message, "green");
+          if (isLogin && result.data?.token) {
+            localStorage.setItem("token", result.data.token);
+            localStorage.setItem("user", JSON.stringify(result.data));
+
+            updateAuthButton();
+
+            const modal = bootstrap.Modal.getInstance(
+              document.getElementById("authModal")
+            );
+            if (modal) modal.hide();
+
+            setTimeout(() => {
+              window.location.href = "index.html";
+            }, 1500);
+          } else if (!isLogin) {
+            setTimeout(() => {
+              setFormMode(true);
+              resetSubmitButton();
+            }, 1500);
           } else {
-            showMessage(data.message || "Something went wrong", "red");
+            resetSubmitButton();
           }
         } catch (err) {
-          showMessage("Server error", "red");
+          console.error("Auth error:", err);
+          showMessage(err.message || "Login failed", "red");
+          resetSubmitButton();
         }
       });
 
-      async function logout() {
-        try {
-          const res = await fetch(API + "/logout", {
-            method: "POST",
-            credentials: "include",
-          });
-          const data = await res.json();
-          if (data.success) {
-            showMessage("Logged out successfully", "green");
-          }
-        } catch (err) {
-          showMessage("Logout failed", "red");
-        }
+      function resetSubmitButton() {
+        submitText.textContent = isLogin ? "Login" : "Register";
+        submitSpinner.style.display = "none";
+        submitBtn.disabled = false;
       }
 
       function showMessage(msg, color) {
         messageDiv.textContent = msg;
         messageDiv.style.color = color;
+        setTimeout(() => {
+          if (messageDiv.textContent === msg) {
+            messageDiv.textContent = "";
+          }
+        }, 3000);
       }
+
+      function updateAuthButton() {
+        const token = localStorage.getItem("token");
+        const user = JSON.parse(localStorage.getItem("user"));
+
+        if (token && user) {
+          authButtonText.textContent = user.username || "User";
+          authButton.classList.remove("btn-outline-warning");
+          authButton.classList.add("btn-warning", "text-dark");
+          userBadge.classList.remove("d-none");
+
+          authButton.setAttribute("data-bs-toggle", "");
+          authButton.setAttribute("data-bs-target", "");
+          authButton.onclick = handleLogout;
+        } else {
+          authButtonText.textContent = "Login";
+          authButton.classList.add("btn-outline-warning");
+          authButton.classList.remove("btn-warning", "text-dark");
+          userBadge.classList.add("d-none");
+
+          authButton.setAttribute("data-bs-toggle", "modal");
+          authButton.setAttribute("data-bs-target", "#authModal");
+          authButton.onclick = null;
+        }
+      }
+
+      function handleLogout() {
+        if (confirm("Are you sure you want to logout?")) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          updateAuthButton();
+          window.location.href = "index.html";
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        setFormMode(true);
+        updateAuthButton();
+      });
     </script>
   </body>
 </html>
