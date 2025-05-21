@@ -1,4 +1,3 @@
-// Cart functions
 const CART_KEY = "shopping_cart";
 
 function getCart() {
@@ -20,21 +19,16 @@ function updateCart(productId, quantity) {
   return cart;
 }
 
-// Update the updateCartCounter function to match your HTML structure
 function updateCartCounter() {
   const cart = getCart();
   const totalItems = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
-
-  // Update cart quantity in your specific HTML structure
   const cartQuantityElement = document.querySelector(".cart-quantity");
   if (cartQuantityElement) {
     cartQuantityElement.textContent = totalItems;
-    // Hide if empty, show if has items (optional)
     cartQuantityElement.style.display = totalItems > 0 ? "block" : "none";
   }
 }
 
-// Modified addToCart function with quantity validation
 function addToCart(productId, quantity) {
   if (isNaN(quantity)) {
     console.error("Invalid quantity");
@@ -62,13 +56,21 @@ function addToCart(productId, quantity) {
   }, 2000);
 }
 
+function getStarIcons(rating) {
+  const fullStars = Math.floor(rating);
+  const halfStar = rating % 1 >= 0.5 ? 1 : 0;
+  const emptyStars = 5 - fullStars - halfStar;
+
+  return "★".repeat(fullStars) + (halfStar ? "½" : "") + "☆".repeat(emptyStars);
+}
+
 async function loadProducts() {
   try {
     const productGrid = document.getElementById("productGrid");
     productGrid.innerHTML =
       '<div class="col-12 text-center"><div class="spinner-border text-warning" role="status"></div></div>';
 
-    const response = await fetch("http://localhost/api/products");
+    const response = await fetch("http://localhost:5000/api/products");
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
     const products = await response.json();
@@ -89,27 +91,19 @@ async function loadProducts() {
       const productHTML = `
         <div class="col">
           <div class="card h-100">
-            <img src="${product.image}" class="card-img-top" alt="${
-        product.title
-      }" loading="lazy">
-            <div class="card-body">
-              <h5 class="card-title">${product.title}</h5>
-              <p class="card-text">
-                $${product.price.toFixed(2)}
-                <span class="text-decoration-line-through text-muted small ms-2">
-                  $${product.original_price?.toFixed(2) || ""}
-                </span>
+            <img src="${
+              product.image_url || "https://via.placeholder.com/300"
+            }" class="card-img-top" alt="${product.name}" loading="lazy">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">${product.name}</h5>
+              <p class="card-text">${product.description}</p>
+              <p class="card-text mt-auto">
+                $${parseFloat(product.price).toFixed(2)}
               </p>
-              <div class="text-warning mb-2">
-                ${getStarIcons(product.rating || 0)}
-                <span class="text-muted small ms-2">(${
-                  product.reviews || 0
-                })</span>
-              </div>
               <div class="d-flex align-items-center gap-2 mb-3">
                 <label for="qty${productId}" class="form-label mb-0">Qty:</label>
                 <input type="number" class="form-control form-control-sm quantity-input" 
-                       id="qty${productId}" min="1" value="1">
+                      id="qty${productId}" min="1" value="1" style="width: 60px;">
                 ${
                   inCartQty > 0
                     ? `<span class="badge bg-success ms-2">${inCartQty} in cart</span>`
@@ -134,26 +128,23 @@ async function loadProducts() {
         const productId = this.getAttribute("data-product-id");
         const quantityInput = document.getElementById(`qty${productId}`);
         const quantity = quantityInput.value;
-
         addToCart(productId, quantity);
 
-        // Update the UI immediately
+        // Update UI
         const cart = getCart();
         const inCartQty = cart[productId] || 0;
-
-        // Update button text
         this.innerHTML = `<i class="fas fa-shopping-cart me-2"></i>${
           inCartQty > 0 ? "Add More" : "Add to Cart"
         }`;
 
-        // Update or create "in cart" badge
-        let badge =
-          this.closest(".card-body").querySelector(".badge.bg-success");
+        // Update badge
+        const badgeContainer = quantityInput.parentNode;
+        let badge = badgeContainer.querySelector(".badge.bg-success");
         if (inCartQty > 0) {
           if (!badge) {
             badge = document.createElement("span");
             badge.className = "badge bg-success ms-2";
-            quantityInput.parentNode.appendChild(badge);
+            badgeContainer.appendChild(badge);
           }
           badge.textContent = `${inCartQty} in cart`;
         } else if (badge) {
@@ -162,13 +153,13 @@ async function loadProducts() {
       });
     });
 
-    // Initialize cart counter
     updateCartCounter();
   } catch (error) {
     console.error("Failed to load products:", error);
-    document.getElementById("productGrid").innerHTML = `
+    productGrid.innerHTML = `
       <div class="col-12 text-center">
         <p class="text-danger">Failed to load products. Please try again later.</p>
+        <p>${error.message}</p>
       </div>
     `;
   }
@@ -186,8 +177,8 @@ document.addEventListener("DOMContentLoaded", function () {
     searchButton.addEventListener("click", function () {
       const searchTerm = searchInput.value.trim();
       if (searchTerm) {
-        // You can implement search filtering here
         console.log("Searching for:", searchTerm);
+        // Implement search filtering here
       }
     });
 

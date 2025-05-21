@@ -1,0 +1,26 @@
+.card-img-top {
+  height: 200px;
+  object-fit: contain;
+  padding: 10px;
+}
+.card {
+  transition: transform 0.3s;
+}
+.card:hover {
+  transform: translateY(-5px);
+}
+.search-bar {
+  width: 100%;
+  padding: 8px 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+.search-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.section-title {
+  font-weight: 700;
+  font-size: 2rem;
+}
