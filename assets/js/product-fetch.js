@@ -1,8 +1,37 @@
 const CART_KEY = "shopping_cart";
+let currentPage = 1;
+let currentSearchTerm = "";
+let isLoading = false;
+let hasMoreProducts = true;
 
 function getCart() {
   const cart = localStorage.getItem(CART_KEY);
   return cart ? JSON.parse(cart) : {};
+}
+
+async function syncCartItemWithServer(productId, quantity) {
+  try {
+    const response = await fetch("http://localhost:5000/api/cart", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        productId: parseInt(productId),
+        quantity: parseInt(quantity),
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to update cart on server");
+    }
+
+    console.log("Cart item successfully updated on server");
+    return await response.json();
+  } catch (error) {
+    console.error("Error syncing cart item:", error);
+    throw error;
+  }
 }
 
 function updateCart(productId, quantity) {
@@ -16,6 +45,12 @@ function updateCart(productId, quantity) {
 
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
   updateCartCounter();
+
+  // Sync with server but don't wait for it to complete
+  syncCartItemWithServer(productId, cart[productId] || 0).catch((error) => {
+    console.error("Background cart sync failed:", error);
+  });
+
   return cart;
 }
 
@@ -41,35 +76,104 @@ function addToCart(productId, quantity) {
     return;
   }
 
+  // Show loading feedback on the button
+  const addButton = document.querySelector(
+    `.add-to-cart[data-product-id="${productId}"]`
+  );
+  const originalButtonHTML = addButton.innerHTML;
+  addButton.innerHTML =
+    '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Adding...';
+  addButton.disabled = true;
+
+  // First update local cart
   updateCart(productId, qty);
 
-  // Show feedback to user
-  const feedback = document.createElement("div");
-  feedback.className = "alert alert-success position-fixed top-0 end-0 m-3";
-  feedback.style.zIndex = "1000";
-  feedback.textContent = `Added ${qty} item(s) to cart!`;
-  document.body.appendChild(feedback);
+  // Then update server (though updateCart already does this)
+  syncCartItemWithServer(productId, qty)
+    .then(() => {
+      // Show success feedback to user
+      const feedback = document.createElement("div");
+      feedback.className = "alert alert-success position-fixed top-0 end-0 m-3";
+      feedback.style.zIndex = "1000";
+      feedback.textContent = `Added ${qty} item(s) to cart!`;
+      document.body.appendChild(feedback);
 
-  setTimeout(() => {
-    feedback.style.opacity = "0";
-    setTimeout(() => feedback.remove(), 300);
-  }, 2000);
+      setTimeout(() => {
+        feedback.style.opacity = "0";
+        setTimeout(() => feedback.remove(), 300);
+      }, 2000);
+    })
+    .catch((error) => {
+      // Show error feedback
+      const feedback = document.createElement("div");
+      feedback.className = "alert alert-danger position-fixed top-0 end-0 m-3";
+      feedback.style.zIndex = "1000";
+      feedback.textContent = "Failed to update cart. Please try again.";
+      document.body.appendChild(feedback);
+
+      setTimeout(() => {
+        feedback.style.opacity = "0";
+        setTimeout(() => feedback.remove(), 300);
+      }, 2000);
+    })
+    .finally(() => {
+      // Restore button state
+      addButton.innerHTML = originalButtonHTML;
+      addButton.disabled = false;
+      updateProductCardUI(productId);
+    });
 }
 
 function removeFromCart(productId) {
+  const removeButton = document.querySelector(
+    `.remove-from-cart[data-product-id="${productId}"]`
+  );
+  const originalButtonHTML = removeButton ? removeButton.innerHTML : "";
+
+  if (removeButton) {
+    removeButton.innerHTML =
+      '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+    removeButton.disabled = true;
+  }
+
+  // First update local cart
   updateCart(productId, 0);
 
-  // Show feedback to user
-  const feedback = document.createElement("div");
-  feedback.className = "alert alert-danger position-fixed top-0 end-0 m-3";
-  feedback.style.zIndex = "1000";
-  feedback.textContent = "Item removed from cart!";
-  document.body.appendChild(feedback);
+  // Then update server
+  syncCartItemWithServer(productId, 0)
+    .then(() => {
+      // Show feedback to user
+      const feedback = document.createElement("div");
+      feedback.className = "alert alert-danger position-fixed top-0 end-0 m-3";
+      feedback.style.zIndex = "1000";
+      feedback.textContent = "Item removed from cart!";
+      document.body.appendChild(feedback);
 
-  setTimeout(() => {
-    feedback.style.opacity = "0";
-    setTimeout(() => feedback.remove(), 300);
-  }, 2000);
+      setTimeout(() => {
+        feedback.style.opacity = "0";
+        setTimeout(() => feedback.remove(), 300);
+      }, 2000);
+    })
+    .catch((error) => {
+      console.error("Failed to remove item from server cart:", error);
+      const feedback = document.createElement("div");
+      feedback.className = "alert alert-danger position-fixed top-0 end-0 m-3";
+      feedback.style.zIndex = "1000";
+      feedback.textContent = "Failed to remove item. Please try again.";
+      document.body.appendChild(feedback);
+
+      setTimeout(() => {
+        feedback.style.opacity = "0";
+        setTimeout(() => feedback.remove(), 300);
+      }, 2000);
+    })
+    .finally(() => {
+      if (removeButton) {
+        removeButton.innerHTML = originalButtonHTML;
+        removeButton.disabled = false;
+      }
+      updateProductCardUI(productId);
+    });
 }
 
 function getStarIcons(rating) {
@@ -80,33 +184,75 @@ function getStarIcons(rating) {
   return "★".repeat(fullStars) + (halfStar ? "½" : "") + "☆".repeat(emptyStars);
 }
 
-async function fetchProducts(searchTerm = "") {
+async function fetchProducts(searchTerm = "", page = 1) {
   try {
-    const url = searchTerm
-      ? `http://localhost:5000/api/products/search?query=${encodeURIComponent(
-          searchTerm
-        )}`
-      : "http://localhost:5000/api/products";
+    let url;
+    if (searchTerm) {
+      url = `http://localhost:5000/api/products/search?query=${encodeURIComponent(
+        searchTerm
+      )}&page=${page}`;
+    } else {
+      url = `http://localhost:5000/api/products?page=${page}`;
+    }
 
     const response = await fetch(url);
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    return await response.json();
+
+    const data = await response.json();
+    return {
+      products: data.products || data,
+      hasMore: data.hasMore,
+    };
   } catch (error) {
     console.error("Failed to fetch products:", error);
     throw error;
   }
 }
 
-async function renderProducts(products) {
+function createLoadMoreButton() {
+  const container = document.createElement("div");
+  container.className = "col-12 text-center my-4"; // Added my-4 for vertical spacing
+
+  const loadMoreBtn = document.createElement("button");
+  loadMoreBtn.className = "btn btn-danger px-4 py-2"; // Added padding for better appearance
+  loadMoreBtn.id = "loadMoreBtn";
+  loadMoreBtn.textContent = "Load More Products";
+
+  loadMoreBtn.addEventListener("click", () => {
+    loadMoreBtn.disabled = true;
+    loadMoreBtn.innerHTML =
+      '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Loading...';
+
+    currentPage++;
+    loadProducts(currentSearchTerm, currentPage, true).finally(() => {
+      // Only restore if button still exists (might be removed if no more products)
+      if (document.getElementById("loadMoreBtn")) {
+        loadMoreBtn.disabled = false;
+        loadMoreBtn.textContent = "Load More Products";
+      }
+    });
+  });
+
+  container.appendChild(loadMoreBtn);
+  return container;
+}
+
+async function renderProducts(products, append = false) {
   const productGrid = document.getElementById("productGrid");
 
+  if (!append) {
+    productGrid.innerHTML = "";
+    currentPage = 1;
+  }
+
   if (!products || products.length === 0) {
-    productGrid.innerHTML =
-      '<div class="col-12 text-center"><p>No products found matching your search</p></div>';
+    if (!append) {
+      productGrid.innerHTML =
+        '<div class="col-12 text-center"><p>No products found matching your search</p></div>';
+    }
     return;
   }
 
-  productGrid.innerHTML = "";
   const cart = getCart();
 
   products.forEach((product, index) => {
@@ -144,7 +290,7 @@ async function renderProducts(products) {
                 inCartQty > 0
                   ? `<button class="btn btn-outline-danger remove-from-cart" data-product-id="${productId}">
                       <i class="fas fa-trash-alt"></i>
-                     </button>`
+                    </button>`
                   : ""
               }
             </div>
@@ -163,7 +309,6 @@ async function renderProducts(products) {
       const quantityInput = document.getElementById(`qty${productId}`);
       const quantity = quantityInput.value;
       addToCart(productId, quantity);
-      updateProductCardUI(productId);
     });
   });
 
@@ -172,28 +317,71 @@ async function renderProducts(products) {
     button.addEventListener("click", function () {
       const productId = this.getAttribute("data-product-id");
       removeFromCart(productId);
-      updateProductCardUI(productId);
     });
   });
+
+  // Remove existing load more button if it exists
+  const existingLoadMore = document.getElementById("loadMoreBtn");
+  if (existingLoadMore) {
+    existingLoadMore.parentElement.remove(); // Remove the container div
+  }
+
+  // Add new load more button if there are more products
+  if (hasMoreProducts) {
+    productGrid.appendChild(createLoadMoreButton());
+  }
 }
 
-async function loadProducts(searchTerm = "") {
-  try {
-    const productGrid = document.getElementById("productGrid");
-    productGrid.innerHTML =
-      '<div class="col-12 text-center"><div class="spinner-border text-warning" role="status"></div></div>';
+async function loadProducts(searchTerm = "", page = 1, append = false) {
+  if (isLoading) return;
 
-    const products = await fetchProducts(searchTerm);
-    await renderProducts(products);
+  try {
+    isLoading = true;
+    currentSearchTerm = searchTerm;
+
+    const productGrid = document.getElementById("productGrid");
+    if (!append) {
+      productGrid.innerHTML =
+        '<div class="col-12 text-center"><div class="spinner-border text-warning" role="status"></div></div>';
+    } else {
+      const loadMoreBtn = document.getElementById("loadMoreBtn");
+      if (loadMoreBtn) {
+        loadMoreBtn.disabled = true;
+        loadMoreBtn.innerHTML =
+          '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Loading...';
+      }
+    }
+
+    const { products, hasMore } = await fetchProducts(searchTerm, page);
+    hasMoreProducts = hasMore !== undefined ? hasMore : true;
+
+    await renderProducts(products, append);
     updateCartCounter();
+
+    // Hide load more button if no more products
+    if (!hasMoreProducts && document.getElementById("loadMoreBtn")) {
+      document.getElementById("loadMoreBtn").parentElement.remove();
+    }
   } catch (error) {
     console.error("Failed to load products:", error);
-    document.getElementById("productGrid").innerHTML = `
-      <div class="col-12 text-center">
-        <p class="text-danger">Failed to load products. Please try again later.</p>
-        <p>${error.message}</p>
-      </div>
-    `;
+
+    // Restore load more button if error occurs
+    const loadMoreBtn = document.getElementById("loadMoreBtn");
+    if (loadMoreBtn) {
+      loadMoreBtn.disabled = false;
+      loadMoreBtn.textContent = "Load More Products";
+    }
+
+    if (!append) {
+      document.getElementById("productGrid").innerHTML = `
+        <div class="col-12 text-center">
+          <p class="text-danger">Failed to load products. Please try again later.</p>
+          <p class="small">${error.message}</p>
+        </div>
+      `;
+    }
+  } finally {
+    isLoading = false;
   }
 }
 
@@ -235,7 +423,6 @@ function updateProductCardUI(productId) {
       removeButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
       removeButton.addEventListener("click", function () {
         removeFromCart(productId);
-        updateProductCardUI(productId);
       });
       cardBody.querySelector(".d-flex.gap-2").appendChild(removeButton);
     }
@@ -248,6 +435,7 @@ function updateProductCardUI(productId) {
 
 // Initialize when DOM is loaded
 document.addEventListener("DOMContentLoaded", function () {
+  // Load initial products
   loadProducts();
 
   // Search functionality
