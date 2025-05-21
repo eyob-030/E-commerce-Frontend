@@ -45,12 +45,37 @@ authForm.addEventListener("submit", async (e) => {
       return;
     }
 
+    if (!res.ok) {
+      showMessage(data.message || "Something went wrong", "red");
+      return;
+    }
+
     if (data.success) {
       showMessage(data.message, "green");
-    } else {
-      showMessage(data.message || "Something went wrong", "red");
+
+      // Store token in localStorage if this is a login request
+      if (isLogin && data.token) {
+        localStorage.setItem("token", data.token);
+
+        // Optional: Store user data if needed
+        if (data.user) {
+          localStorage.setItem("user", JSON.stringify(data.user));
+        }
+
+        // Redirect to home page or dashboard after successful login
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 1500);
+      } else if (!isLogin) {
+        // Switch to login mode after successful registration
+        setTimeout(() => {
+          setFormMode(true);
+          authForm.reset();
+        }, 1500);
+      }
     }
   } catch (err) {
+    console.error("Login error:", err);
     showMessage("Server error", "red");
   }
 });
@@ -58,6 +83,11 @@ authForm.addEventListener("submit", async (e) => {
 function showMessage(msg, color) {
   messageDiv.textContent = msg;
   messageDiv.style.color = color;
+
+  // Clear message after 3 seconds
+  setTimeout(() => {
+    messageDiv.textContent = "";
+  }, 3000);
 }
 
 // Initialize in login mode

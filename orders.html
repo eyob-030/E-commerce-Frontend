@@ -1,189 +1,368 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Your Orders - Shoppy</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Orders - Shoppy</title>
 
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
 
-  <!-- Font Awesome -->
-  <script src="https://kit.fontawesome.com/f30fac2c61.js" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="assets/css/navbar.css" />
-  <style>
-    :root {
-      --primary-color: #2c3e50;
-      --secondary-color: #ffc107;
-      --accent-color: #e74c3c;
-      --light-color: #ecf0f1;
-      --dark-color: #2c3e50;
-    }
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/f30fac2c61.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="assets/css/navbar.css" />
+    <style>
+      :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #ffc107;
+        --accent-color: #e74c3c;
+        --light-color: #ecf0f1;
+        --dark-color: #2c3e50;
+      }
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
 
-    .navbar {
-      background-color: var(--primary-color) !important;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
+      .navbar {
+        background-color: var(--primary-color) !important;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
 
-    .navbar-brand {
-      font-weight: 700;
-      font-size: 1.5rem;
-    }
+      .navbar-brand {
+        font-weight: 700;
+        font-size: 1.5rem;
+      }
 
-    .nav-link {
-      font-weight: 500;
-      position: relative;
-    }
+      .nav-link {
+        font-weight: 500;
+        position: relative;
+      }
 
-    .nav-link:hover {
-      color: var(--secondary-color) !important;
-    }
+      .nav-link:hover {
+        color: var(--secondary-color) !important;
+      }
 
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      width: 0;
-      height: 2px;
-      bottom: 0;
-      left: 0;
-      background-color: var(--secondary-color);
-      transition: width 0.3s ease;
-    }
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: var(--secondary-color);
+        transition: width 0.3s ease;
+      }
 
-    .nav-link:hover::after {
-      width: 100%;
-    }
+      .nav-link:hover::after {
+        width: 100%;
+      }
 
-    .orders-section {
-      padding: 60px 0;
-      background-color: #f8f9fa;
-    }
+      .orders-section {
+        padding: 60px 0;
+        background-color: #f8f9fa;
+      }
 
-    .order-card {
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      margin-bottom: 30px;
-      background-color: white;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-      padding: 20px;
-    }
+      .order-card {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        margin-bottom: 30px;
+        background-color: white;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        padding: 20px;
+      }
 
-    .order-img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 5px;
-    }
+      .order-img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 5px;
+      }
 
-    .order-details h5 {
-      font-size: 1.1rem;
-      margin-bottom: 5px;
-    }
+      .order-details h5 {
+        font-size: 1.1rem;
+        margin-bottom: 5px;
+      }
 
-    .order-details span {
-      color: var(--accent-color);
-      font-weight: 600;
-    }
+      .order-details span {
+        color: var(--accent-color);
+        font-weight: 600;
+      }
 
-    .order-status {
-      font-size: 0.9rem;
-      color: green;
-      font-weight: 600;
-    }
-  </style>
-</head>
+      .order-status {
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
 
-<body>
+      .status-delivered {
+        color: green;
+      }
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
-  <div class="container d-flex justify-content-between align-items-center">
-    
-    <!-- Left: Logo -->
-    <a class="navbar-brand" href="index.html">SHOPPY</a>
+      .status-shipped {
+        color: #2196f3;
+      }
 
-    <!-- Toggler -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+      .status-processing {
+        color: #ff9800;
+      }
 
-    <!-- Center: Navigation Links -->
-    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-      <ul class="navbar-nav text-center">
-        <li class="nav-item"><a class="nav-link text-white" href="index.html">Home</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="index.html#shop">Shop</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="index.html#review">Review</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="index.html#blog">Blog</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="contact.html">Contact</a></li>
-      </ul>
-    </div>
+      .status-cancelled {
+        color: #f44336;
+      }
 
-    <!-- Right: Cart and Orders -->
-    <div class="d-flex align-items-center custom-header-right-section">
-      <a class="orders-link header-link me-3" href="orders.html">
-        <span class="returns-text">Returns</span><br />
-        <span class="orders-text">& Orders</span>
-      </a>
+      .loading-spinner {
+        display: none;
+        text-align: center;
+        margin: 50px 0;
+      }
 
-      <a class="cart-link header-link me-3" href="cart.html">
-        <img class="cart-icon" src="assets/images/icons/cart-icon.png" alt="Cart">
-        <div class="cart-quantity">3</div>
-        <div class="cart-text">Cart</div>
-      </a>
+      .no-orders {
+        text-align: center;
+        padding: 50px 0;
+        display: none;
+      }
+    </style>
+  </head>
 
-      <button class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#authModal">
-        <i class="fas fa-user me-2"></i>Login
-      </button>
-    </div>
-  </div>
-</nav>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+      <div class="container d-flex justify-content-between align-items-center">
+        <!-- Left: Logo -->
+        <a class="navbar-brand" href="index.html">SHOPPY</a>
 
-<!-- Orders Section -->
-<section class="orders-section">
-  <div class="container">
-    <h2 class="text-center mb-5">Your Orders</h2>
+        <!-- Toggler -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <!-- Order 1 -->
-    <div class="order-card d-flex flex-column flex-md-row align-items-center gap-4">
-      <img src="https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" class="order-img" alt="Product Image">
-      <div class="order-details">
-        <h5>Premium T-Shirt</h5>
-        <p>Order ID: #123456 | Qty: 2</p>
-        <p>Total: <span>$99.98</span></p>
-        <p class="order-status">Delivered</p>
+        <!-- Center: Navigation Links -->
+        <div
+          class="collapse navbar-collapse justify-content-center"
+          id="navbarNav"
+        >
+          <ul class="navbar-nav text-center">
+            <li class="nav-item">
+              <a class="nav-link text-white" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="index.html#shop">Shop</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="index.html#review">Review</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="index.html#blog">Blog</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="contact.html">Contact</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Right: Cart and Orders -->
+        <div class="d-flex align-items-center custom-header-right-section">
+          <a class="orders-link header-link me-3" href="orders.html">
+            <span class="returns-text">Returns</span><br />
+            <span class="orders-text">& Orders</span>
+          </a>
+
+          <a class="cart-link header-link me-3" href="cart.html">
+            <img
+              class="cart-icon"
+              src="assets/images/icons/cart-icon.png"
+              alt="Cart"
+            />
+            <div class="cart-quantity">3</div>
+            <div class="cart-text">Cart</div>
+          </a>
+
+          <button
+            class="btn btn-outline-warning"
+            data-bs-toggle="modal"
+            data-bs-target="#authModal"
+          >
+            <i class="fas fa-user me-2"></i>Login
+          </button>
+        </div>
       </div>
-    </div>
+    </nav>
 
-    <!-- Order 2 -->
-    <div class="order-card d-flex flex-column flex-md-row align-items-center gap-4">
-      <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" class="order-img" alt="Product Image">
-      <div class="order-details">
-        <h5>Casual Shirt</h5>
-        <p>Order ID: #654321 | Qty: 1</p>
-        <p>Total: <span>$59.99</span></p>
-        <p class="order-status">Shipped</p>
+    <!-- Orders Section -->
+    <section class="orders-section">
+      <div class="container">
+        <h2 class="text-center mb-5">Your Orders</h2>
+
+        <!-- Loading Spinner -->
+        <div class="loading-spinner">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="mt-2">Loading your orders...</p>
+        </div>
+
+        <!-- No Orders Message -->
+        <div class="no-orders">
+          <i class="fas fa-box-open fa-3x mb-3" style="color: #ccc"></i>
+          <h4>No orders found</h4>
+          <p>You haven't placed any orders yet.</p>
+          <a href="index.html#shop" class="btn btn-primary">Start Shopping</a>
+        </div>
+
+        <!-- Orders Container -->
+        <div id="orders-container">
+          <!-- Orders will be dynamically inserted here -->
+        </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Order 3 -->
-    <div class="order-card d-flex flex-column flex-md-row align-items-center gap-4">
-      <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" class="order-img" alt="Product Image">
-      <div class="order-details">
-        <h5>Denim Jacket</h5>
-        <p>Order ID: #789012 | Qty: 1</p>
-        <p>Total: <span>$89.99</span></p>
-        <p class="order-status">In Process</p>
-      </div>
-    </div>
-  </div>
-</section>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const ordersContainer = document.getElementById("orders-container");
+        const loadingSpinner = document.querySelector(".loading-spinner");
+        const noOrdersMessage = document.querySelector(".no-orders");
 
-</body>
+        // Show loading spinner
+        loadingSpinner.style.display = "block";
+        ordersContainer.innerHTML = "";
+
+        // Fetch orders from API
+        fetch("http://localhost:5000/api/orders")
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((orders) => {
+            // Hide loading spinner
+            loadingSpinner.style.display = "none";
+
+            if (orders.length === 0) {
+              noOrdersMessage.style.display = "block";
+              return;
+            }
+
+            // Process and display orders
+            orders.forEach((order) => {
+              const orderCard = document.createElement("div");
+              orderCard.className =
+                "order-card d-flex flex-column flex-md-row align-items-center gap-4";
+
+              // Format the date
+              const orderDate = new Date(order.created_at).toLocaleDateString(
+                "en-US",
+                {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                }
+              );
+
+              // Determine status class
+              let statusClass = "";
+              switch (order.status.toLowerCase()) {
+                case "delivered":
+                  statusClass = "status-delivered";
+                  break;
+                case "shipped":
+                  statusClass = "status-shipped";
+                  break;
+                case "pending":
+                  statusClass = "status-processing";
+                  break;
+                default:
+                  statusClass = "status-processing";
+              }
+
+              // Calculate total quantity (assuming order.items is populated from your API)
+              const totalQuantity = order.items
+                ? order.items.reduce((sum, item) => sum + item.quantity, 0)
+                : 0;
+
+              // Get the first product image (you might need to adjust this based on your product structure)
+              const firstProductImage =
+                order.items && order.items.length > 0
+                  ? order.items[0].product_image ||
+                    "https://via.placeholder.com/100"
+                  : "https://via.placeholder.com/100";
+
+              // Get the first product name
+              const firstProductName =
+                order.items && order.items.length > 0
+                  ? order.items[0].product_name || "Product"
+                  : "Product";
+
+              orderCard.innerHTML = `
+            <img src="${firstProductImage}" class="order-img" alt="Product Image">
+            <div class="order-details">
+              <h5>${firstProductName}${
+                order.items && order.items.length > 1
+                  ? ` + ${order.items.length - 1} more`
+                  : ""
+              }</h5>
+              <p>Order #${
+                order.id
+              } | Placed on ${orderDate} | ${totalQuantity} item${
+                totalQuantity !== 1 ? "s" : ""
+              }</p>
+              <p>Total: <span>$${order.total_amount.toFixed(2)}</span></p>
+              <p class="order-status ${statusClass}">${
+                order.status.charAt(0).toUpperCase() + order.status.slice(1)
+              }</p>
+              <button class="btn btn-outline-secondary btn-sm mt-2" onclick="viewOrderDetails('${
+                order.id
+              }')">View Details</button>
+            </div>
+          `;
+
+              ordersContainer.appendChild(orderCard);
+            });
+          })
+          .catch((error) => {
+            console.error("Error fetching orders:", error);
+            loadingSpinner.style.display = "none";
+            ordersContainer.innerHTML = `
+          <div class="alert alert-danger" role="alert">
+            Failed to load orders. Please try again later.
+          </div>
+        `;
+          });
+      });
+
+      function viewOrderDetails(orderId) {
+        // Here you would typically fetch more details for this specific order
+        // For now, we'll just show an alert
+        alert(`Viewing details for order #${orderId}`);
+
+        // In a real implementation, you might:
+        // 1. Redirect to an order details page:
+        // window.location.href = `order-details.html?orderId=${orderId}`;
+
+        // OR 2. Fetch and show order details in a modal:
+        /*
+    fetch(`http://localhost:5000/api/orders/${orderId}`)
+      .then(response => response.json())
+      .then(orderDetails => {
+        // Show modal with order details
+        showOrderDetailsModal(orderDetails);
+      });
+    */
+      }
+    </script>
+  </body>
 </html>

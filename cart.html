@@ -1,262 +1,571 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Your Orders - Shoppy</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Cart - Shoppy</title>
 
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/navbar.css" />
-  <!-- Font Awesome -->
-  <script src="https://kit.fontawesome.com/f30fac2c61.js" crossorigin="anonymous"></script>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/navbar.css" />
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/f30fac2c61.js"
+      crossorigin="anonymous"
+    ></script>
 
-  <style>
-    :root {
-      --primary-color: #2c3e50;
-      --secondary-color: #ffc107;
-      --accent-color: #e74c3c;
-      --light-color: #ecf0f1;
-      --dark-color: #2c3e50;
-    }
+    <style>
+      :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #ffc107;
+        --accent-color: #e74c3c;
+        --light-color: #ecf0f1;
+        --dark-color: #2c3e50;
+      }
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f8f9fa;
+      }
 
-    .navbar {
-      background-color: var(--primary-color) !important;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
+      .navbar {
+        background-color: var(--primary-color) !important;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
 
-    .navbar-brand {
-      font-weight: 700;
-      font-size: 1.5rem;
-    }
+      .navbar-brand {
+        font-weight: 700;
+        font-size: 1.5rem;
+      }
 
-    .nav-link {
-      font-weight: 500;
-      position: relative;
-    }
+      .nav-link {
+        font-weight: 500;
+        position: relative;
+      }
 
-    .nav-link:hover {
-      color: var(--secondary-color) !important;
-    }
+      .nav-link:hover {
+        color: var(--secondary-color) !important;
+      }
 
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      width: 0;
-      height: 2px;
-      bottom: 0;
-      left: 0;
-      background-color: var(--secondary-color);
-      transition: width 0.3s ease;
-    }
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: var(--secondary-color);
+        transition: width 0.3s ease;
+      }
 
-    .nav-link:hover::after {
-      width: 100%;
-    }
+      .nav-link:hover::after {
+        width: 100%;
+      }
 
-    .orders-section {
-      padding: 60px 0;
-      background-color: #f8f9fa;
-    }
+      .cart-section {
+        padding: 60px 0;
+      }
 
-    .order-card {
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      margin-bottom: 30px;
-      background-color: white;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-      padding: 20px;
-    }
+      .cart-item {
+        border-bottom: 1px solid #eee;
+        padding: 15px 0;
+      }
 
-    .order-img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 5px;
-    }
+      .cart-item:last-child {
+        border-bottom: none;
+      }
 
-    .order-details h5 {
-      font-size: 1.1rem;
-      margin-bottom: 5px;
-    }
+      .cart-item-img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 5px;
+      }
 
-    .order-details span {
-      color: var(--accent-color);
-      font-weight: 600;
-    }
+      .quantity-input {
+        width: 70px;
+        text-align: center;
+      }
 
-    .order-status {
-      font-size: 0.9rem;
-      color: green;
-      font-weight: 600;
-    }
-  </style>
-</head>
+      .empty-cart {
+        text-align: center;
+        padding: 50px 0;
+      }
 
-<body>
+      .empty-cart i {
+        font-size: 5rem;
+        color: #ddd;
+        margin-bottom: 20px;
+      }
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
-  <div class="container d-flex justify-content-between align-items-center">
-    
-    <!-- Left: Logo -->
-    <a class="navbar-brand" href="index.html">SHOPPY</a>
+      .summary-card {
+        position: sticky;
+        top: 20px;
+      }
 
-    <!-- Toggler -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+      .shipping-options {
+        margin-top: 10px;
+      }
 
-    <!-- Center: Navigation Links -->
-    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-      <ul class="navbar-nav text-center">
-        <li class="nav-item"><a class="nav-link text-white" href="index.html">Home</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="index.html#shop">Shop</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="index.html#review">Review</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="index.html#blog">Blog</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="contact.html">Contact</a></li>
-      </ul>
-    </div>
+      .shipping-option {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 0;
+        cursor: pointer;
+      }
 
-    <!-- Right: Cart and Orders -->
-    <div class="d-flex align-items-center custom-header-right-section">
-      <a class="orders-link header-link me-3" href="orders.html">
-        <span class="returns-text">Returns</span><br />
-        <span class="orders-text">& Orders</span>
-      </a>
+      .shipping-option.selected {
+        font-weight: bold;
+        color: var(--secondary-color);
+      }
+    </style>
+  </head>
 
-      <a class="cart-link header-link me-3" href="cart.html">
-        <img class="cart-icon" src="assets/images/icons/cart-icon.png" alt="Cart">
-        <div class="cart-quantity">3</div>
-        <div class="cart-text">Cart</div>
-      </a>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+      <div class="container d-flex justify-content-between align-items-center">
+        <!-- Left: Logo -->
+        <a class="navbar-brand" href="index.html">SHOPPY</a>
 
-      <button class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#authModal">
-        <i class="fas fa-user me-2"></i>Login
-      </button>
-    </div>
-  </div>
-</nav>
-    <section class="py-5" id="cart">
-  <div class="container">
-    <h2 class="section-title">Your <span class="text-warning">Shopping</span> Cart</h2>
-    <div class="row">
-      <div class="col-md-8">
-        <div class="card mb-4">
-          <div class="card-body">
-            <h5 class="card-title">Cart Items (3)</h5>
-            
-            <div class="cart-item">
-              <div class="row align-items-center">
-                <div class="col-md-2">
-                  <img src="https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" class="img-fluid" alt="Product">
-                </div>
-                <div class="col-md-4">
-                  <h6>Premium T-Shirt</h6>
-                  <small class="text-muted">Color: White | Size: M</small>
-                </div>
-                <div class="col-md-2">
-                  <input type="number" class="form-control quantity-input" value="1" min="1">
-                </div>
-                <div class="col-md-2">
-                  <span class="fw-bold">$49.99</span>
-                </div>
-                <div class="col-md-2 text-end">
-                  <button class="btn btn-sm btn-outline-dange">
-                    <i class="fas fa-trash"></i>
-                  </button>
+        <!-- Toggler -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Center: Navigation Links -->
+        <div
+          class="collapse navbar-collapse justify-content-center"
+          id="navbarNav"
+        >
+          <ul class="navbar-nav text-center">
+            <li class="nav-item">
+              <a class="nav-link text-white" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="index.html#shop">Shop</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="index.html#review">Review</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="index.html#blog">Blog</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="contact.html">Contact</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Right: Cart and Orders -->
+        <div class="d-flex align-items-center custom-header-right-section">
+          <a class="orders-link header-link me-3" href="orders.html">
+            <span class="returns-text">Returns</span><br />
+            <span class="orders-text">& Orders</span>
+          </a>
+
+          <a class="cart-link header-link me-3" href="cart.html">
+            <img
+              class="cart-icon"
+              src="assets/images/icons/cart-icon.png"
+              alt="Cart"
+            />
+            <div class="cart-quantity" id="navbar-cart-count">0</div>
+            <div class="cart-text">Cart</div>
+          </a>
+
+          <button
+            class="btn btn-outline-warning"
+            data-bs-toggle="modal"
+            data-bs-target="#authModal"
+          >
+            <i class="fas fa-user me-2"></i>Login
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <section class="cart-section py-5" id="cart">
+      <div class="container">
+        <h2 class="section-title mb-5">
+          Your <span class="text-warning">Shopping</span> Cart
+        </h2>
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="card mb-4">
+              <div class="card-body">
+                <h5 class="card-title mb-4">
+                  Cart Items (<span id="cart-count">0</span>)
+                </h5>
+
+                <div id="cart-items-container">
+                  <!-- Empty state -->
+                  <div id="empty-cart-message" class="empty-cart d-none">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h4>Your cart is empty</h4>
+                    <p>
+                      Looks like you haven't added any items to your cart yet.
+                    </p>
+                    <a href="index.html#shop" class="btn btn-warning"
+                      >Continue Shopping</a
+                    >
+                  </div>
+                  <!-- Cart items will be injected here by JavaScript -->
                 </div>
               </div>
             </div>
-            
-            <div class="cart-item">
-              <div class="row align-items-center">
-                <div class="col-md-2">
-                  <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" class="img-fluid" alt="Product">
+          </div>
+
+          <div class="col-lg-4">
+            <div class="card summary-card">
+              <div class="card-body">
+                <h5 class="card-title mb-4">Order Summary</h5>
+                <div class="d-flex justify-content-between mb-2">
+                  <span>Subtotal</span>
+                  <span id="subtotal">$0.00</span>
                 </div>
-                <div class="col-md-4">
-                  <h6>Denim Jacket</h6>
-                  <small class="text-muted">Color: Blue | Size: L</small>
+
+                <div class="mb-2">
+                  <div class="d-flex justify-content-between">
+                    <span>Shipping</span>
+                    <span id="shipping">FREE</span>
+                  </div>
+                  <div class="shipping-options d-none" id="shipping-options">
+                    <div
+                      class="shipping-option selected"
+                      data-value="0"
+                      onclick="selectShipping(this, 0)"
+                    >
+                      <span>Standard Shipping</span>
+                      <span>FREE</span>
+                    </div>
+                    <div
+                      class="shipping-option"
+                      data-value="5.99"
+                      onclick="selectShipping(this, 5.99)"
+                    >
+                      <span>Express Shipping</span>
+                      <span>$5.99</span>
+                    </div>
+                    <div
+                      class="shipping-option"
+                      data-value="9.99"
+                      onclick="selectShipping(this, 9.99)"
+                    >
+                      <span>Priority Shipping</span>
+                      <span>$9.99</span>
+                    </div>
+                  </div>
                 </div>
-                <div class="col-md-2">
-                  <input type="number" class="form-control quantity-input" value="1" min="1">
+
+                <div class="d-flex justify-content-between mb-2">
+                  <span>Tax</span>
+                  <span id="tax">$0.00</span>
                 </div>
-                <div class="col-md-2">
-                  <span class="fw-bold">$89.99</span>
+                <hr />
+                <div class="d-flex justify-content-between mb-4">
+                  <span class="fw-bold">Total</span>
+                  <span class="fw-bold" id="total">$0.00</span>
                 </div>
-                <div class="col-md-2 text-end">
-                  <button class="btn btn-sm btn-outline-dange">
-                    <i class="fas fa-trash"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-            
-            <div class="cart-item">
-              <div class="row align-items-center">
-                <div class="col-md-2">
-                  <img src="https://images.unsplash.com/photo-1527719327859-c6ce80353573?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" class="img-fluid" alt="Product">
-                </div>
-                <div class="col-md-4">
-                  <h6>Slim Fit Jeans</h6>
-                  <small class="text-muted">Color: Black | Size: 32</small>
-                </div>
-                <div class="col-md-2">
-                  <input type="number" class="form-control quantity-input" value="2" min="1">
-                </div>
-                <div class="col-md-2">
-                  <span class="fw-bold">$139.98</span>
-                </div>
-                <div class="col-md-2 text-end">
-                  <button class="btn btn-sm btn-outline-dange">
-                    <i class="fas fa-trash"></i>
-                  </button>
+                <button
+                  class="btn btn-warning w-100"
+                  id="checkout-btn"
+                  disabled
+                >
+                  Proceed to Checkout
+                </button>
+                <div class="text-center mt-3">
+                  <small class="text-muted"
+                    >or
+                    <a href="index.html#shop" class="text-decoration-none"
+                      >Continue Shopping</a
+                    ></small
+                  >
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      
-      <div class="col-md-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title mb-4">Order Summary</h5>
-            <div class="d-flex justify-content-between mb-2">
-              <span>Subtotal</span>
-              <span>$279.96</span>
-            </div>
-            <div class="d-flex justify-content-between mb-2">
-              <span>Shipping</span>
-              <span>FREE</span>
-            </div>
-            <div class="d-flex justify-content-between mb-2">
-              <span>Tax</span>
-              <span>$16.80</span>
-            </div>
-            <hr>
-            <div class="d-flex justify-content-between mb-4">
-              <span class="fw-bold">Total</span>
-              <span class="fw-bold">$296.76</span>
-            </div>
-            <button class="btn btn-warning w-100">Proceed to Checkout</button>
-            <div class="text-center mt-3">
-              <small class="text-muted">or <a href="#shop" class="text-decoration-none">Continue Shopping</a></small>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+    </section>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const API_URL = "/api/cart"; // Update this if your route is different
+      const CALCULATE_TOTALS_URL = "/api/cart/calculate"; // Endpoint for calculating totals
+      const AUTH_TOKEN = localStorage.getItem("token"); // Make sure you store JWT after login
 
+      // Global variables for cart calculations
+      let cartState = {
+        subtotal: 0,
+        shipping: 0,
+        tax: 0,
+        total: 0,
+        items: [],
+      };
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+      // Fetch and display cart
+      async function loadCart() {
+        try {
+          const headers = {};
+          if (AUTH_TOKEN) {
+            headers["Authorization"] = `Bearer ${AUTH_TOKEN}`;
+          }
 
-</body>
+          // First fetch cart items
+          const itemsResponse = await fetch(API_URL, {
+            headers: headers,
+          });
+
+          if (!itemsResponse.ok) {
+            throw new Error("Failed to load cart items");
+          }
+
+          const cartData = await itemsResponse.json();
+          const cartItems = cartData.items || [];
+
+          // Then calculate totals
+          const totalsResponse = await fetch(CALCULATE_TOTALS_URL, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              ...headers,
+            },
+            body: JSON.stringify({ items: cartItems }),
+          });
+
+          if (!totalsResponse.ok) {
+            throw new Error("Failed to calculate cart totals");
+          }
+
+          const totalsData = await totalsResponse.json();
+
+          // Update cart state
+          cartState = {
+            ...totalsData,
+            items: cartItems,
+          };
+
+          // Update UI
+          updateCartUI();
+        } catch (err) {
+          console.error(err);
+          const container = document.getElementById("cart-items-container");
+          container.innerHTML = `
+            <div class="alert alert-danger">
+              Could not load cart items. Please try again later.
+            </div>`;
+        }
+      }
+
+      // Update the entire cart UI
+      function updateCartUI() {
+        const container = document.getElementById("cart-items-container");
+        const emptyCartMessage = document.getElementById("empty-cart-message");
+        const countElement = document.getElementById("cart-count");
+        const navbarCountElement = document.getElementById("navbar-cart-count");
+
+        // Update counts
+        const itemCount = cartState.items.length;
+        countElement.textContent = itemCount;
+        navbarCountElement.textContent = itemCount;
+
+        // Show empty message if no items
+        if (itemCount === 0) {
+          container.innerHTML = "";
+          emptyCartMessage.classList.remove("d-none");
+          updateSummary();
+          document.getElementById("checkout-btn").disabled = true;
+          return;
+        } else {
+          emptyCartMessage.classList.add("d-none");
+        }
+
+        // Clear container
+        container.innerHTML = "";
+
+        // Add each item to the container
+        cartState.items.forEach((item) => {
+          const itemTotal = item.price * item.quantity;
+
+          const itemHtml = `
+            <div class="cart-item" data-product-id="${item.product_id}">
+              <div class="row align-items-center">
+                <div class="col-3 col-md-2">
+                  <img src="${
+                    item.image_url || "assets/images/placeholder-product.jpg"
+                  }" 
+                       class="img-fluid cart-item-img" 
+                       alt="${item.name}">
+                </div>
+                <div class="col-5 col-md-4">
+                  <h6 class="mb-1">${item.name}</h6>
+                  <small class="text-muted">$${item.price.toFixed(
+                    2
+                  )} each</small>
+                </div>
+                <div class="col-2">
+                  <input type="number" 
+                         class="form-control quantity-input" 
+                         value="${item.quantity}" 
+                         min="1" 
+                         onchange="updateCartItem('${
+                           item.product_id
+                         }', this.value)">
+                </div>
+                <div class="col-2 text-end">
+                  <span class="fw-bold">$${itemTotal.toFixed(2)}</span>
+                </div>
+                <div class="col-2 text-end">
+                  <button class="btn btn-sm btn-outline-danger" 
+                          onclick="removeCartItem('${item.product_id}')">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+            </div>`;
+          container.insertAdjacentHTML("beforeend", itemHtml);
+        });
+
+        // Update summary
+        updateSummary();
+        document.getElementById("checkout-btn").disabled = false;
+      }
+
+      // Update order summary
+      function updateSummary() {
+        document.getElementById(
+          "subtotal"
+        ).textContent = `$${cartState.subtotal.toFixed(2)}`;
+        document.getElementById("tax").textContent = `$${cartState.tax.toFixed(
+          2
+        )}`;
+
+        // Update shipping display
+        const shippingElement = document.getElementById("shipping");
+        if (cartState.shipping > 0) {
+          shippingElement.textContent = `$${cartState.shipping.toFixed(2)}`;
+        } else {
+          shippingElement.textContent = "FREE";
+        }
+
+        // Update total
+        document.getElementById(
+          "total"
+        ).textContent = `$${cartState.total.toFixed(2)}`;
+
+        // Show shipping options if subtotal > 0
+        const shippingOptions = document.getElementById("shipping-options");
+        if (cartState.subtotal > 0) {
+          shippingOptions.classList.remove("d-none");
+        } else {
+          shippingOptions.classList.add("d-none");
+        }
+      }
+
+      // Select shipping option
+      function selectShipping(element, shippingCost) {
+        // Update UI
+        document.querySelectorAll(".shipping-option").forEach((option) => {
+          option.classList.remove("selected");
+        });
+        element.classList.add("selected");
+
+        // Update cart state
+        cartState.shipping = shippingCost;
+        cartState.total =
+          cartState.subtotal + cartState.tax + cartState.shipping;
+
+        // Update summary
+        updateSummary();
+
+        // Send update to server
+        updateShippingMethod(shippingCost);
+      }
+
+      // Update shipping method on server
+      async function updateShippingMethod(shippingCost) {
+        try {
+          await fetch(`${API_URL}/shipping`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${AUTH_TOKEN}`,
+            },
+            body: JSON.stringify({ shipping: shippingCost }),
+          });
+        } catch (err) {
+          console.error("Failed to update shipping method", err);
+        }
+      }
+
+      // Update cart quantity
+      async function updateCartItem(productId, quantity) {
+        if (quantity < 1) {
+          alert("Quantity must be at least 1");
+          return;
+        }
+
+        try {
+          const response = await fetch(`${API_URL}/${productId}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${AUTH_TOKEN}`,
+            },
+            body: JSON.stringify({ quantity: parseInt(quantity) }),
+          });
+
+          if (!response.ok) {
+            throw new Error("Update failed");
+          }
+
+          // Reload cart after update
+          await loadCart();
+        } catch (err) {
+          console.error("Update failed", err);
+          alert("Could not update item quantity. Please try again.");
+        }
+      }
+
+      // Remove item
+      async function removeCartItem(productId) {
+        if (
+          !confirm("Are you sure you want to remove this item from your cart?")
+        ) {
+          return;
+        }
+
+        try {
+          const response = await fetch(`${API_URL}/${productId}`, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${AUTH_TOKEN}`,
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error("Delete failed");
+          }
+
+          // Reload cart after delete
+          await loadCart();
+        } catch (err) {
+          console.error("Delete failed", err);
+          alert("Could not remove item. Please try again.");
+        }
+      }
+
+      // Load on page ready
+      document.addEventListener("DOMContentLoaded", loadCart);
+    </script>
+  </body>
 </html>
