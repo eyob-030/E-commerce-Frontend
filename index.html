@@ -621,8 +621,7 @@
     <!-- Cart Section -->
 
     <!-- Contact Section -->
-
-    <!-- Login/Register Modal -->
+    <!-- Modal -->
     <div
       class="modal fade"
       id="authModal"
@@ -630,10 +629,10 @@
       aria-labelledby="authModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="formTitle">Login</h5>
+            <h5 class="modal-title" id="authModalLabel">Login</h5>
             <button
               type="button"
               class="btn-close"
@@ -641,117 +640,73 @@
               aria-label="Close"
             ></button>
           </div>
-
           <div class="modal-body">
-            <!-- Nav Tabs -->
-            <ul
-              class="nav nav-tabs nav-justified mb-4"
-              id="authTab"
-              role="tablist"
-            >
-              <li class="nav-item" role="presentation">
-                <button
-                  class="nav-link active"
-                  id="login-tab"
-                  type="button"
-                  onclick="setFormMode(true)"
-                >
-                  Login
-                </button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button
-                  class="nav-link"
-                  id="register-tab"
-                  type="button"
-                  onclick="setFormMode(false)"
-                >
-                  Register
-                </button>
-              </li>
-            </ul>
-
-            <!-- Unified Form -->
-            <form id="authForm">
-              <!-- Username (only visible in register mode) -->
-              <div class="mb-3" id="usernameWrapper" style="display: none">
-                <label for="username" class="form-label">Full Name</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="username"
-                  placeholder="Username"
-                />
-              </div>
-
-              <div class="mb-3">
-                <label for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="email" required />
-              </div>
-
-              <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input
-                  type="password"
-                  class="form-control"
-                  id="password"
-                  required
-                />
-                <div class="form-text text-end">
-                  <a href="#" class="text-decoration-none">Forgot password?</a>
+            <div class="auth-container">
+              <h2 id="formTitle" class="text-center mb-4">Login</h2>
+              <form id="authForm" novalidate>
+                <div id="usernameWrapper" class="mb-3" style="display: none">
+                  <label for="username" class="form-label">Username</label>
+                  <input type="text" class="form-control" id="username" />
                 </div>
-              </div>
-
-              <!-- Confirm Password (only visible in register mode, not used in JS logic currently) -->
-              <div class="mb-3" id="confirmWrapper" style="display: none">
-                <label for="confirmPassword" class="form-label"
-                  >Confirm Password</label
-                >
-                <input
-                  type="password"
-                  class="form-control"
-                  id="confirmPassword"
-                />
-              </div>
-
-              <!-- Terms checkbox (only for register) -->
-              <div
-                class="form-check mb-3"
-                id="termsWrapper"
-                style="display: none"
-              >
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="termsCheck"
-                />
-                <label class="form-check-label" for="termsCheck">
-                  I agree to the
-                  <a href="#" class="text-decoration-none"
-                    >Terms and Conditions</a
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="password" class="form-label">Password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    required
+                  />
+                </div>
+                <div id="confirmWrapper" class="mb-3" style="display: none">
+                  <label for="confirmPassword" class="form-label"
+                    >Confirm Password</label
                   >
-                </label>
-              </div>
-
-              <!-- Submit Button -->
-              <button type="submit" class="btn btn-dark w-100" id="submitBtn">
-                Login
-              </button>
-
-              <div class="text-center mt-3">
-                <p class="mb-0">Or login with</p>
-                <div class="d-flex justify-content-center gap-3 mt-2">
-                  <button type="button" class="btn btn-outline-primary">
-                    <i class="fab fa-facebook-f"></i>
-                  </button>
-                  <button type="button" class="btn btn-outline-danger">
-                    <i class="fab fa-google"></i>
-                  </button>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="confirmPassword"
+                  />
                 </div>
+                <div
+                  id="termsWrapper"
+                  class="mb-3 form-check"
+                  style="display: none"
+                >
+                  <input type="checkbox" class="form-check-input" id="terms" />
+                  <label class="form-check-label" for="terms"
+                    >I agree to the terms and conditions</label
+                  >
+                </div>
+                <div id="message" class="mb-3"></div>
+                <button
+                  type="submit"
+                  id="submitBtn"
+                  class="btn btn-primary w-100"
+                >
+                  <span id="submitText">Login</span>
+                  <span
+                    class="spinner-border spinner-border-sm"
+                    id="submitSpinner"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                </button>
+              </form>
+              <div class="text-center mt-3">
+                <a href="#" id="toggleForm" class="text-decoration-none">
+                  Don't have an account? Register
+                </a>
               </div>
-
-              <div id="message" class="message mt-3 text-center"></div>
-            </form>
+            </div>
           </div>
         </div>
       </div>
@@ -834,4 +789,3 @@
     <script src="../frontend/assets/js/product-fetch.js"></script>
   </body>
 </html>
-\
