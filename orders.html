@@ -127,6 +127,29 @@
         padding: 50px 0;
         display: none;
       }
+
+      /* New styles for the enhanced order view */
+      .order-item {
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .order-summary {
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-radius: 5px;
+      }
+
+      .shipping-info {
+        background-color: #f0f8ff;
+        padding: 15px;
+        border-radius: 5px;
+      }
+
+      .badge {
+        font-size: 0.8rem;
+        padding: 5px 10px;
+      }
     </style>
   </head>
 
@@ -235,16 +258,21 @@
         const ordersContainer = document.getElementById("orders-container");
         const loadingSpinner = document.querySelector(".loading-spinner");
         const noOrdersMessage = document.querySelector(".no-orders");
+        const AUTH_TOKEN = localStorage.getItem("token");
 
         // Show loading spinner
         loadingSpinner.style.display = "block";
         ordersContainer.innerHTML = "";
 
         // Fetch orders from API
-        fetch("http://localhost:5000/api/orders")
+        fetch("http://localhost:5000/api/orders", {
+          headers: {
+            Authorization: `Bearer ${AUTH_TOKEN}`,
+          },
+        })
           .then((response) => {
             if (!response.ok) {
-              throw new Error("Network response was not ok");
+              throw new Error(`HTTP error! status: ${response.status}`);
             }
             return response.json();
           })
@@ -252,116 +280,176 @@
             // Hide loading spinner
             loadingSpinner.style.display = "none";
 
-            if (orders.length === 0) {
+            if (!orders || orders.length === 0) {
               noOrdersMessage.style.display = "block";
               return;
             }
 
             // Process and display orders
             orders.forEach((order) => {
-              const orderCard = document.createElement("div");
-              orderCard.className =
-                "order-card d-flex flex-column flex-md-row align-items-center gap-4";
+              try {
+                const orderCard = document.createElement("div");
+                orderCard.className = "order-card";
 
-              // Format the date
-              const orderDate = new Date(order.created_at).toLocaleDateString(
-                "en-US",
-                {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
+                // Format the date (if available)
+                const orderDate = order.created_at
+                  ? new Date(order.created_at).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })
+                  : "N/A";
+
+                // Determine status class
+                let statusClass = "";
+                switch ((order.status || "").toLowerCase()) {
+                  case "delivered":
+                    statusClass = "status-delivered";
+                    break;
+                  case "shipped":
+                    statusClass = "status-shipped";
+                    break;
+                  case "pending":
+                    statusClass = "status-processing";
+                    break;
+                  case "cancelled":
+                    statusClass = "status-cancelled";
+                    break;
+                  default:
+                    statusClass = "status-processing";
                 }
-              );
 
-              // Determine status class
-              let statusClass = "";
-              switch (order.status.toLowerCase()) {
-                case "delivered":
-                  statusClass = "status-delivered";
-                  break;
-                case "shipped":
-                  statusClass = "status-shipped";
-                  break;
-                case "pending":
-                  statusClass = "status-processing";
-                  break;
-                default:
-                  statusClass = "status-processing";
+                // Calculate total quantity and ensure prices are numbers
+                let totalQuantity = 0;
+                let orderItemsHTML = "";
+
+                if (order.items && order.items.length > 0) {
+                  totalQuantity = order.items.reduce((sum, item) => {
+                    // Convert quantity to number
+                    const quantity = parseInt(item.quantity) || 1;
+                    return sum + quantity;
+                  }, 0);
+
+                  orderItemsHTML = order.items
+                    .map((item) => {
+                      // Convert price to number and handle potential missing values
+                      const price = parseFloat(item.price) || 0;
+                      const quantity = parseInt(item.quantity) || 1;
+                      const imageUrl = item.image_url
+                        ? `http://localhost:5000/uploads/${item.image_url}`
+                        : "https://via.placeholder.com/100";
+
+                      return `
+                    <div class="order-item d-flex align-items-center mb-3">
+                      <div class="flex-shrink-0">
+                        <img src="${imageUrl}" 
+                             class="order-img me-3" 
+                             alt="${item.name || "Product"}">
+                      </div>
+                      <div class="flex-grow-1">
+                        <h6 class="mb-1">${item.name || "Product"}</h6>
+                        <div class="d-flex justify-content-between">
+                          <small>Quantity: ${quantity}</small>
+                          <small>Price: $${price.toFixed(2)} each</small>
+                        </div>
+                      </div>
+                    </div>
+                  `;
+                    })
+                    .join("");
+                }
+
+                // Convert all monetary values to numbers
+                const subtotal = parseFloat(order.subtotal) || 0;
+                const shipping = parseFloat(order.shipping) || 0;
+                const tax = parseFloat(order.tax) || 0;
+                const total = parseFloat(order.total) || 0;
+
+                orderCard.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <div>
+                    <h5 class="mb-1">Order #${order.id || "N/A"}</h5>
+                    <small class="text-muted">Placed on ${orderDate}</small>
+                  </div>
+                  <div>
+                    <span class="badge ${statusClass}">${(
+                  order.status || "Pending"
+                ).toUpperCase()}</span>
+                  </div>
+                </div>
+                
+                <div class="order-items mb-3">
+                  ${orderItemsHTML}
+                </div>
+                
+                <div class="order-summary pt-3 border-top">
+                  <div class="d-flex justify-content-between mb-2">
+                    <span>Subtotal (${totalQuantity} item${
+                  totalQuantity !== 1 ? "s" : ""
+                }):</span>
+                    <span>$${subtotal.toFixed(2)}</span>
+                  </div>
+                  <div class="d-flex justify-content-between mb-2">
+                    <span>Shipping:</span>
+                    <span>$${shipping.toFixed(2)}</span>
+                  </div>
+                  <div class="d-flex justify-content-between mb-2">
+                    <span>Tax:</span>
+                    <span>$${tax.toFixed(2)}</span>
+                  </div>
+                  <div class="d-flex justify-content-between fw-bold">
+                    <span>Total:</span>
+                    <span>$${total.toFixed(2)}</span>
+                  </div>
+                </div>
+                
+                <div class="shipping-info mt-4 pt-3 border-top">
+                  <h6>Shipping Information</h6>
+                  <p class="mb-1">${order.shippingInfo?.name || "N/A"}</p>
+                  <p class="mb-1">${order.shippingInfo?.address || "N/A"}</p>
+                  <p class="mb-1">${order.shippingInfo?.city || "N/A"}, ${
+                  order.shippingInfo?.zip || "N/A"
+                }</p>
+                </div>
+              `;
+
+                ordersContainer.appendChild(orderCard);
+              } catch (error) {
+                console.error("Error processing order:", order, error);
+                // Create a basic order card even if there's an error
+                const errorCard = document.createElement("div");
+                errorCard.className = "order-card alert alert-warning";
+                errorCard.innerHTML = `
+                <h5>Order #${order.id || "N/A"}</h5>
+                <p>There was an error displaying this order. Please contact support.</p>
+              `;
+                ordersContainer.appendChild(errorCard);
               }
-
-              // Calculate total quantity (assuming order.items is populated from your API)
-              const totalQuantity = order.items
-                ? order.items.reduce((sum, item) => sum + item.quantity, 0)
-                : 0;
-
-              // Get the first product image (you might need to adjust this based on your product structure)
-              const firstProductImage =
-                order.items && order.items.length > 0
-                  ? order.items[0].product_image ||
-                    "https://via.placeholder.com/100"
-                  : "https://via.placeholder.com/100";
-
-              // Get the first product name
-              const firstProductName =
-                order.items && order.items.length > 0
-                  ? order.items[0].product_name || "Product"
-                  : "Product";
-
-              orderCard.innerHTML = `
-            <img src="${firstProductImage}" class="order-img" alt="Product Image">
-            <div class="order-details">
-              <h5>${firstProductName}${
-                order.items && order.items.length > 1
-                  ? ` + ${order.items.length - 1} more`
-                  : ""
-              }</h5>
-              <p>Order #${
-                order.id
-              } | Placed on ${orderDate} | ${totalQuantity} item${
-                totalQuantity !== 1 ? "s" : ""
-              }</p>
-              <p>Total: <span>$${order.total_amount.toFixed(2)}</span></p>
-              <p class="order-status ${statusClass}">${
-                order.status.charAt(0).toUpperCase() + order.status.slice(1)
-              }</p>
-              <button class="btn btn-outline-secondary btn-sm mt-2" onclick="viewOrderDetails('${
-                order.id
-              }')">View Details</button>
-            </div>
-          `;
-
-              ordersContainer.appendChild(orderCard);
             });
           })
           .catch((error) => {
             console.error("Error fetching orders:", error);
             loadingSpinner.style.display = "none";
+
+            // More detailed error message
+            let errorMessage = "Failed to load orders. Please try again later.";
+            if (error.message.includes("401")) {
+              errorMessage = "Please login to view your orders.";
+            } else if (error.message.includes("404")) {
+              errorMessage = "No orders found.";
+            }
+
             ordersContainer.innerHTML = `
-          <div class="alert alert-danger" role="alert">
-            Failed to load orders. Please try again later.
-          </div>
-        `;
+            <div class="alert alert-danger" role="alert">
+              ${errorMessage}
+              ${AUTH_TOKEN ? "" : "<p>You are not logged in.</p>"}
+            </div>
+          `;
           });
       });
 
       function viewOrderDetails(orderId) {
-        // Here you would typically fetch more details for this specific order
-        // For now, we'll just show an alert
-        alert(`Viewing details for order #${orderId}`);
-
-        // In a real implementation, you might:
-        // 1. Redirect to an order details page:
-        // window.location.href = `order-details.html?orderId=${orderId}`;
-
-        // OR 2. Fetch and show order details in a modal:
-        /*
-    fetch(`http://localhost:5000/api/orders/${orderId}`)
-      .then(response => response.json())
-      .then(orderDetails => {
-        // Show modal with order details
-        showOrderDetailsModal(orderDetails);
-      });
-    */
+        window.location.href = `order-details.html?orderId=${orderId}`;
       }
     </script>
   </body>
